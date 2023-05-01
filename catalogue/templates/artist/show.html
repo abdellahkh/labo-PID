@@ -1,0 +1,6 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Fiche d’un artiste{% endblock %}
+{% block content %}
+  <h1>{{ artist.firstname }} {{ artist.lastname }}</h1>
+  <nav><a href="{% url 'catalogue:artist-index' %}">Retour à l'index</a></nav>
+{% endblock %}
