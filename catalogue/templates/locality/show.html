@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+ <h1>{{ locality.postal_code }} {{ locality.locality }}</h1>
+ <pre>|{{ locality.locations.all }}|</pre>
+ <ul>
+ {% for location in locality.locations.all %}
+<li>{{ location.designation }}</li>
+ {% endfor %}
+ </ul>
+ </ul>
+{% endblock %}
