@@ -13,6 +13,9 @@ def show(request, artist_id):
             artist = Artist.objects.get(id=artist_id)
     except Artist.DoesNotExist:
             raise Http404('Artist inexistant');
-    return render(request, 'artist/show.html', {
+
+    title = 'Fiche d\'un artiste'
+
+    return render(request, 'artist/index.html', {
             'artist':artist,
     })
