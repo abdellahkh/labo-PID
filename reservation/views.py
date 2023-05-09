@@ -2,9 +2,14 @@ from django.shortcuts import render
 from .forms import ShowRegistration
 from .models import Show
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Create your views here.
 def home(request):
-    return render(request,'home.html')
+    shows = Show.objects.all()
+    return render(request,'home.html', {'shows': shows})
 
 def login(request):
     return render(request,'login.html')
