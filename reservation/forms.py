@@ -9,7 +9,7 @@ class ShowRegistration(forms.ModelForm):
         widgets = {   #@TODO
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
             'locality_id': forms.TextInput(attrs={'class': 'form-control'}),
             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}), 
