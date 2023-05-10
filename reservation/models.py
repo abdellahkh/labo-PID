@@ -10,4 +10,5 @@ class Show(models.Model):
     locality_id = models.IntegerField()
     bookable = models.BooleanField()
     price = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
