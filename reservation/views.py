@@ -1,15 +1,34 @@
+from calendar import HTMLCalendar
+import calendar
 from django.shortcuts import render
 from .forms import ShowRegistration
 from .models import Show
+from datetime import datetime
 
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create your views here.
-def home(request):
+#def home(request):
+#    shows = Show.objects.all()
+#    return render(request,'main/home.html', {'shows': shows})
+
+def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
     shows = Show.objects.all()
-    return render(request,'main/home.html', {'shows': shows})
+
+    month = month.capitalize()
+    month_number = list(calendar.month_name).index(month)
+    month_number = int(month_number)
+    
+    cal = HTMLCalendar().formatmonth( year, month_number)
+    now = datetime.now()
+    current_year = now.year
+    current_month = now.month
+
+    return render(request,'main/home.html', {'shows': shows, 'year': year, 'month':month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
+
+
 
 def login(request):
     return render(request,'registration/login.html')
