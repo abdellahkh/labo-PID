@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}NYGMA - Register{% endblock %}
+{% block content %}
+{% if form.errors %}
+  <div class="alert alert-warning  alert-dismissible fade show m-3" role="alert">
+    Il y a eu une erreur lors de la soumission
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
+<div class="container">
+    <div class="row mt-5 mb-5 shadow">
+        <div class="col-lg-6 shadow p-4">
+          <h3>Inscription</h3>
+            <form action="{% url 'register' %}" method=POST>
+              {% csrf_token %}
+              {{ form.as_p }}
+               <!--<div class="form-group">
+                    <label for="exampleInputPrenom">Prenom</label>
+                    <input type="text" class="form-control" id="exampleInputPrenom" aria-describedby="prenomHelp">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputNom">Nom</label>
+                    <input type="text" class="form-control" id="exampleInputNom" aria-describedby="NomHelp">
+                  </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We want it!</small>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPasswordConfirmation">Password confirmation</label>
+                    <input type="password" class="form-control" id="exampleInputPasswordConfirmation">
+                  </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              -->
+              <br/> <br/>
+              <input type="submit" value="submit" class="btn btn-secondary">
+              </form>
+        </div>
+        <div class="col-lg-6">
+          <img src="" alt="" class="img-fluid img-responsive">
+        </div>
+    </div>
+</div>
+{% endblock %}
