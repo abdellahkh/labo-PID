@@ -42,17 +42,21 @@
         </div>
         <div>
           <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            
+              <li class="nav-item">
+                <a class="nav-link btn btn-danger text-white" href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% else %}
               <li class="nav-item">
                 <a class="nav-link btn btn-success text-white" href="{% url 'login' %}">Login</a>
               </li>
               <li class="nav-item active ml-2">
                 <a class="nav-link btn btn-info text-white" href="{% url 'register' %}">Register</a>
               </li>
+            {% endif %}
               <li class="nav-item active ml-2">
                 <a class="nav-link btn btn-info text-white" href="{% url 'addandshow' %}">Ajoutez spectacle</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link btn btn-success text-white" href="/">Logout</a>
               </li>
             </div>
           </ul>
@@ -63,7 +67,7 @@
         {% if messages %}
           {% for message in messages %}
             
-            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+            <div class="alert {% if user.is_authenticated %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show m-3" role="alert">
               {{message}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
