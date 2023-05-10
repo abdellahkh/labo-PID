@@ -9,13 +9,13 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 def home(request):
     shows = Show.objects.all()
-    return render(request,'home.html', {'shows': shows})
+    return render(request,'main/home.html', {'shows': shows})
 
 def login(request):
-    return render(request,'login.html')
+    return render(request,'registration/login.html')
 
 def register(request):
-    return render(request,'register.html')
+    return render(request,'registration/register.html')
 
 def addandshow(request):
     if request.method == 'POST':
