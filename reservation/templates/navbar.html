@@ -32,17 +32,25 @@
         <div>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                            <li class="nav-item dropdown m-2">
+                                <a class="nav-link dropdown-toggle text-white btn btn-success" href="#" id="navbarDropdownMenuLink" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{% url 'addandshow' %}">Ajouter Spectacle</a>
+                                    <a class="dropdown-item" href="admin">Admin Panel</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        {% endif %}
                     <li class="nav-item m-2">
                         <a class="nav-link btn btn-warning text-white" href="#">My account</a>
                     </li>
                     <li class="nav-item m-2">
                         <a class="nav-link btn btn-danger text-white" href="{% url 'logout' %}">Logout</a>
                     </li>
-                        {% if user.is_superuser %}
-                            <li class="nav-item active m-2">
-                                <a class="nav-link btn btn-info text-white" href="{% url 'addandshow' %}">Ajoutez spectacle</a>
-                            </li>
-                        {% endif %}
                     <li >
                             <span class="badge badge-pill badge-info">{{ request.user.username }}</span>                        
                     </li>
