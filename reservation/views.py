@@ -44,10 +44,10 @@ def addandshow(request):
             ti = fm.cleaned_data['title']
             des = fm.cleaned_data['description']
             pu = fm.cleaned_data['poster_url']
-            li = fm.cleaned_data['locality_id']
+            li = fm.cleaned_data['location_id']
             bk = fm.cleaned_data['bookable']
             pr = fm.cleaned_data['price']
-            reg = Show(slug = sl, title = ti, description = des, poster_url = pu, locality_id = li, bookable = bk, price = pr)
+            reg = Show(slug = sl, title = ti, description = des, poster_url = pu, location_id = li, bookable = bk, price = pr)
             reg.save()
             fm = ShowRegistration()
     else: 
