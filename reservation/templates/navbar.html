@@ -11,10 +11,10 @@
                     <a class="nav-link text-white" href="/">Accueil<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Artistes</a>
+                    <a class="nav-link text-white" href="{% url 'allArtists' %}">Artistes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Spectacles</a>
+                    <a class="nav-link text-white" href="{% url 'allShows' %}">Spectacles</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button"
@@ -39,7 +39,7 @@
                                     Admin
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'addandshow' %}">Ajouter Spectacle</a>
+                                    <a class="dropdown-item" href="admin/reservation/show/add/">Ajouter Spectacle</a>
                                     <a class="dropdown-item" href="admin">Admin Panel</a>
                                     <a class="dropdown-item" href="#">Something else here</a>
                                 </div>

@@ -2,7 +2,7 @@ from calendar import HTMLCalendar
 import calendar
 from django.shortcuts import render
 from .forms import ShowRegistration
-from .models import Show
+from .models import *
 from datetime import datetime
 
 import logging
@@ -53,3 +53,12 @@ def addandshow(request):
     else: 
         fm = ShowRegistration()
     return render(request, 'show/addandshow.html', {'form': fm})
+
+
+def allShows(request):
+    shows = Show.objects.all()
+    return render(request, "show/allShows.html", {'shows': shows})
+
+def allArtists(request):
+    artists = Artist.objects.all()
+    return render(request, "artist/allArtists.html", {'artists': artists})
