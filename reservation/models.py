@@ -20,7 +20,7 @@ class Location(models.Model):
     phone = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.slug
+        return self.designation
 
 
 class Show(models.Model):
