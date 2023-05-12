@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import ShowRegistration, ArtistFormCreation
 from .models import *
 from datetime import datetime
+from django.contrib import messages
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -96,6 +97,7 @@ def editArtist(request, artist_id):
         form = ArtistFormCreation(request.POST, instance=artist)
         if form.is_valid():
             form.save()
+            messages.success(request, ("Artiste a bien ete modifier"))
             return redirect('showArtist', artist_id=artist.id)
     else:
         form = ArtistFormCreation(instance=artist)
