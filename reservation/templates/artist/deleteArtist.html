@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <p>Voulez-vous vraiment supprimer l'artiste "{{ artist.firstname }} {{ artist.lastname }}" ?</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_hidden }}
+        <input type="submit" value="Supprimer">
+        <a href="{% url 'showArtist' artist.id %}">Annuler</a>
+    </form>
+{% endblock %}
