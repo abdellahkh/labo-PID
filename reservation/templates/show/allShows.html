@@ -5,12 +5,25 @@
     <div class="row">
         <div class="col-sm-4">
             <h4 class="text-center alert alert-info">All Shows</h4>
-        </div class="container p-1" >
+        
         {% for show in shows %}
-            <div class="container p-1" >
-                {{ show.title }}
+        <div class="card m-3" style="width: 18rem;">
+            <img src="{{show.poster_url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ show.title }}</h5>
+                <p class="card-text">{{ show.description }}</p>
             </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Lieu : {{ show.location_id }}</li>
+                <li class="list-group-item">Prix: {{ show.price }} Euro</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
         {% endfor %}
+    </div>
     </div>
 </div>
 
