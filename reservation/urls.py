@@ -12,11 +12,14 @@ urlpatterns = [
     path('artist/<int:artist_id>',showArtist, name='showArtist'),  # a rendre plus jolie
     path('artist/create/', artistCreate, name='artistCreate'),  # a rendre plus jolie
     path('artist/<int:artist_id>/edit/', editArtist , name='artist_edit'), # a rendre plus jolie
-    path('artist/<int:artist_id>/delete', deleteArtist, name='deleteArtist'),
+    path('artist/<int:artist_id>/delete', deleteArtist, name='deleteArtist'),  # a rendre plus jolie
     
     
     
     #path('type/', views.type.index, name='type_index'),
+    
+    
+    
     #path('type/<int:type_id>', views.type.show, name='type_show'),
     #path('locality/', views.locality.index, name='locality_index'),
     #path('locality/<int:locality_id>', views.locality.show, name='locality_show'),
