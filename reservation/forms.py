@@ -1,6 +1,6 @@
 from django.core import validators
 from django import forms
-from .models import Show
+from .models import Artist, Show
 
 class ShowRegistration(forms.ModelForm):
     class Meta:
@@ -15,3 +15,9 @@ class ShowRegistration(forms.ModelForm):
             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}), 
             'price': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class ArtistFormCreation(forms.ModelForm):
+    class Meta:
+        model = Artist
+        fields = ['firstname','lastname']
