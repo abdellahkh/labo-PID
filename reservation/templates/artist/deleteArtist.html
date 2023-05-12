@@ -6,7 +6,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_hidden }}
-        <input type="submit" value="Supprimer">
-        <a href="{% url 'showArtist' artist.id %}">Annuler</a>
+        <input class="btn btn-danger" type="submit" value="Supprimer">
+        <a class="btn btn-success" href="{% url 'showArtist' artist.id %}">Annuler</a>
     </form>
 {% endblock %}
