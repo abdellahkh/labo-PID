@@ -11,8 +11,7 @@ urlpatterns = [
     path('artist', allArtists , name="allArtists"),   # Visuel a faire
     path('artist/<int:artist_id>',showArtist, name='showArtist'),  # a rendre plus jolie
     path('artist/create/', artistCreate, name='artistCreate'),  # a rendre plus jolie
-    
-    #path('artist/<int:artist_id>/edit/', views.artist.edit, name='artist_edit'),
+    path('artist/<int:artist_id>/edit/', editArtist , name='artist_edit'), # a rendre plus jolie
 
 
     
