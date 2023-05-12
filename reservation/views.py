@@ -2,7 +2,7 @@ from calendar import HTMLCalendar
 import calendar
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import ShowRegistration, ArtistFormCreation
+from .forms import ArtistDeleteForm, ShowRegistration, ArtistFormCreation
 from .models import *
 from datetime import datetime
 from django.contrib import messages
@@ -105,6 +105,29 @@ def editArtist(request, artist_id):
     title = 'Modifier un artiste'
 
     return render(request, 'artist/editArtist.html', {
+        'artist': artist,
+        'form': form,
+        'title': title
+    })
+
+def deleteArtist(request, artist_id):
+    try:
+        artist = Artist.objects.get(id=artist_id)
+    except Artist.DoesNotExist:
+        raise Http404('Artist inexistant')
+
+    if request.method == 'POST':
+        form = ArtistDeleteForm(request.POST, instance=artist)
+        if form.is_valid():
+            artist.delete()
+            messages.success(request, ("Artiste a bien ete supprimer"))
+            return redirect('allArtists')
+    else:
+        form = ArtistDeleteForm(instance=artist)
+
+    title = 'Supprimer un artiste'
+
+    return render(request, 'artist/deleteArtist.html', {
         'artist': artist,
         'form': form,
         'title': title
