@@ -1,7 +1,8 @@
 from calendar import HTMLCalendar
 import calendar
-from django.shortcuts import render
-from .forms import ShowRegistration
+from django.http import Http404
+from django.shortcuts import redirect, render
+from .forms import ShowRegistration, ArtistFormCreation
 from .models import *
 from datetime import datetime
 
@@ -62,3 +63,26 @@ def allShows(request):
 def allArtists(request):
     artists = Artist.objects.all()
     return render(request, "artist/allArtists.html", {'artists': artists})
+
+def showArtist(request, artist_id):
+    try:
+        artist = Artist.objects.get(id=artist_id)
+    except Artist.DoesNotExist:
+        raise Http404('Artiste inexistant')
+    
+    title = 'Fiche artiste'
+
+    return render(request, 'artist/showArtist.html', {'artist' : artist, 'title' : title})
+
+def artistCreate(request):
+    if request.method == 'POST':
+        form = ArtistFormCreation(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('allArtists')
+    else:
+        form = ArtistFormCreation()
+
+    title = "Creer un artiste"
+
+    return render(request, 'artist/createArtist.html', {'form': form, 'title': title})
