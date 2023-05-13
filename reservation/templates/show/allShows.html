@@ -6,25 +6,47 @@
         <div class="col-sm-4">
             <h4 class="text-center alert alert-info">All Shows</h4>
         
-        {% for show in shows %}
+        {% for showd in shows %}
         <div class="card m-3" style="width: 18rem;">
-            <img src="{{show.poster_url}}" class="card-img-top" alt="...">
+            <img src="{{showd.poster_url}}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">{{ show.title }}</h5>
-                <p class="card-text">{{ show.description }}</p>
+                <h5 class="card-title">{{ showd.title }}</h5>
+                <p class="card-text">{{ showd.description }}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Lieu : {{ show.location_id }}</li>
-                <li class="list-group-item">Prix: {{ show.price }} Euro</li>
+                <li class="list-group-item">Lieu : {{ showd.location_id }}</li>
+                <li class="list-group-item">Prix: {{ showd.price }} Euro</li>
             </ul>
             <div class="card-body">
                 <a href="#" class="card-link">Card link</a>
                 <a href="#" class="card-link">Another link</a>
             </div>
-        </div>
+        </div> 
         {% endfor %}
     </div>
     </div>
 </div>
+<br/></br/>
+{{ shows }} <br/>
+Has Previous: {{ shows.has_previous}} <br/>
+Has Next: {{ shows.has_next}} <br/>
+Current Page: {{ shows.number}} <br/>
+Number of Pages: {{ shows.paginator.num_pages}} <br/>
+<hr><br/><br/>
+
+{% if shows.has_previous %}
+    <a href="?page=1">&laquo First</a>
+    <a href="?page={{shows.previous_page_number}}">Previous</a>
+
+{% endif %}
+
+page {{shows.number}} of {{shows.paginator.num_pages}}
+
+{% if shows.has_next %}
+    <a href="?page={{shows.next_page_number}}">Next</a>
+    <a href="?page={{shows.paginator.num_pages}}">Last &raquo</a>
+
+{% endif %}
+
 
 {% endblock %}
