@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="/">Reservation - NYGMAM</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="/">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'allArtists' %}">Artistes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'allShows' %}">Spectacles</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Contactez-nous!
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                            <li class="nav-item dropdown m-2">
+                                <a class="nav-link dropdown-toggle text-white btn btn-success" href="#" id="navbarDropdownMenuLink" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="admin/reservation/show/add/">Ajouter Spectacle</a>
+                                    <a class="dropdown-item" href="admin">Admin Panel</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    <li class="nav-item m-2">
+                        <a class="nav-link btn btn-warning text-white" href="#">My account</a>
+                    </li>
+                    <li class="nav-item m-2">
+                        <a class="nav-link btn btn-danger text-white" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li >
+                            <span class="badge badge-pill badge-info">{{ request.user.username }}</span>                        
+                    </li>
+                {% else %}
+                <li class="nav-item m-2">
+                    <a class="nav-link btn btn-success text-white" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item active m-2">
+                    <a class="nav-link btn btn-info text-white" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+                
+        </div>
+        </ul>
+    </div>
+    </div>
+</nav>

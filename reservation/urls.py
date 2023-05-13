@@ -5,7 +5,8 @@ from .views import *
 
 urlpatterns = [
     path('',home, name="home"),
-    #path('login',login, name="login"),
-    path('register',register, name="register"),
     path('addandshow',addandshow, name="addandshow"),
+    path('<int:year>/<str:month>/',home, name="home"),
+    path('all_shows', allShows , name="allShows"),
+    path('all_artists', allArtists , name="allArtists"),
 ]
