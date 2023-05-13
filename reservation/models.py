@@ -12,10 +12,10 @@ class Locality(models.Model):
 
 
 class Location(models.Model):
-    slug = models.CharField(max_length=60)
+    slug = models.CharField(max_length=60, unique=True)
     designation = models.CharField(max_length=60)
     address = models.CharField(max_length=255)
-    locality_id = models.ForeignKey(Locality, blank=True, null=True, on_delete=models.CASCADE)
+    locality_id = models.ForeignKey(Locality, blank=True, null=True, on_delete=models.SET_NULL, related_name='locations')
     website = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
 
@@ -36,18 +36,21 @@ class Show(models.Model):
     def __str__(self):
         return self.slug
 
-class Artist(models.Model):
-    firstname = models.CharField(max_length=60)
-    lastname = models.CharField(max_length=60)
-
-    def __str__(self):
-        return self.firstname + '' + self.lastname
-
 class Type(models.Model):
     type= models.CharField(max_length=60)
 
     def __str__(self):
         return self.type
+
+
+class Artist(models.Model):
+    firstname = models.CharField(max_length=60)
+    lastname = models.CharField(max_length=60)
+    types = models.ManyToManyField(Type, through='ArtisteType')
+
+    def __str__(self):
+        return self.firstname + '' + self.lastname
+
 
 
 class ArtisteType(models.Model):
