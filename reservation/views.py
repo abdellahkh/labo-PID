@@ -7,6 +7,9 @@ from .models import *
 from datetime import datetime
 from django.contrib import messages
 
+# Import pagination Stuff
+from django.core.paginator import Paginator 
+
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -58,9 +61,17 @@ def addandshow(request):
 
 
 def allShows(request):
-    shows = Show.objects.all()
-    return render(request, "show/allShows.html", {'shows': shows})
+    #shows = Show.objects.all().order_by('?')
+    shows_list = Show.objects.all()
 
+    # Set up Pagination
+    p = Paginator(Show.objects.all(), 3)
+    page = request.GET.get('page')
+    show = p.get_page(page)
+
+    return render (request, "show/allShows.html", {'show_list': shows_list,"shows": show})
+    
+    
 def allArtists(request):
     artists = Artist.objects.all()
     return render(request, "artist/allArtists.html", {'artists': artists})
