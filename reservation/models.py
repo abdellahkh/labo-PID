@@ -24,13 +24,13 @@ class Location(models.Model):
 
 
 class Show(models.Model):
-    slug = models.CharField(max_length=60)
-    title = models.CharField('Show Title', max_length=255)
-    description = models.TextField('Show Description')
-    poster_url = models.CharField('Show Image', max_length=255)
+    slug = models.CharField(max_length=60, blank = True, null = True)
+    title = models.CharField('Show Title', max_length=255, blank = True, null = True)
+    description = models.TextField('Show Description', blank = True, null = True)
+    poster_url = models.CharField('Show Image', max_length=255, blank = True, null = True)
     location_id = models.ForeignKey(Location, blank = True, null = True, on_delete=models.SET_NULL)
-    bookable = models.BooleanField()
-    price = models.FloatField()
+    bookable = models.BooleanField(blank = True, null = True)
+    price = models.FloatField(blank = True, null = True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
@@ -82,12 +82,6 @@ class RepresentationUser(models.Model):
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField()
-
-
-
-
-
-
 
 
 class Role(models.Model):

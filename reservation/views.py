@@ -41,7 +41,7 @@ def login(request):
 def register(request):
     return render(request,'registration/register.html')
 
-def addandshow(request):
+def addshow(request):
     if request.method == 'POST':
         fm = ShowRegistration(request.POST)
         if fm.is_valid():
@@ -70,6 +70,29 @@ def allShows(request):
     show = p.get_page(page)
 
     return render (request, "show/allShows.html", {'show_list': shows_list,"shows": show})
+
+
+def editShow(request, show_id):
+    show = get_object_or_404(Show, id=show_id)
+
+    if request.method == 'POST':
+        form = ShowRegistration(request.POST, instance=show)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ("Artiste a bien ete modifier"))
+            return redirect('showArtist', show_id=show.id)
+    else:
+        form = ShowRegistration(instance=show)
+
+    title = 'Modifier un show'
+
+    return render(request, 'show/updateShow.html', {
+        'show': show,
+        'form': form,
+        'title': title
+    })
+
+
     
     
 def allArtists(request):
@@ -85,8 +108,6 @@ def displayShow(request, show_id):
     
     title = 'Fiche d\'un show'
     return render(request, "show/show.html", { 'show': show, 'title': title})
-
-
 
 
 
@@ -158,3 +179,43 @@ def deleteArtist(request, artist_id):
         'form': form,
         'title': title
     })
+
+
+# Create your views here.
+def show_all_type(request):
+    types = Type.objects.all()
+
+    title = 'Liste des types'
+
+    return render(request, 'type/showType.html', {
+        'types': types,
+        'title': title
+    })
+
+
+def showType(request, type_id):
+    try:
+        type = Type.objects.get(id=type_id)
+    except Type.DoesNotExist:
+        raise Http404('Type inexistant')
+
+    title = 'Fiche d\'un type'
+
+    return render(request, 'type/showType.html', {
+        'type': type,
+        'title': title
+    })
+
+def allLocality(request):
+    localities = Locality.objects.all()
+    return render(request, "localities/localities.html", {'localities': localities})
+
+def showLocality(request, locality_id):
+    try:
+        locality = Locality.objects.get(id=locality_id)
+    except Artist.DoesNotExist:
+        raise Http404('La locqalite n\'existe pas')
+    
+    title = 'Fiche localite'
+
+    return render(request, 'localities/localities.html', {'locality' : locality, 'title' : title})
