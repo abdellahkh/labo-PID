@@ -76,6 +76,21 @@ def allArtists(request):
     artists = Artist.objects.all()
     return render(request, "artist/allArtists.html", {'artists': artists})
 
+
+def displayShow(request, show_id):
+    try:
+        show = Show.objects.get(id=show_id)
+    except Show.DoesNotExist:
+        raise Http404('Pas de show identifier')
+    
+    title = 'Fiche d\'un show'
+    return render(request, "show/show.html", { 'show': show, 'title': title})
+
+
+
+
+
+
 def showArtist(request, artist_id):
     try:
         artist = Artist.objects.get(id=artist_id)

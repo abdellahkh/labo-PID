@@ -6,8 +6,9 @@ from .views import *
 urlpatterns = [
     path('',home, name="home"),
     path('addandshow',addandshow, name="addandshow"),
-    path('<int:year>/<str:month>/',home, name="home"),
+    #path('<int:year>/<str:month>/',home, name="home"),
     path('all_shows', allShows , name="allShows"),
+    path('show/<int:show_id>', displayShow , name="show_detail" ),
     
     path('artist', allArtists , name="allArtists"),   # Visuel a faire
     path('artist/<int:artist_id>',showArtist, name='showArtist'),  # a rendre plus jolie
