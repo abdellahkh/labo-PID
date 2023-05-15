@@ -31,6 +31,7 @@ urlpatterns = [
     #path('show/<int:show_id>', views.show_detail.show, name='show_show'),
     #path('representation/', views.representation.index, name='representation_index'),
     #path('representation/<int:representation_id>', views.representation.show, name='representation_show'),
+   #12 
 
 
 ]

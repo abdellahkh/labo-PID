@@ -2,6 +2,8 @@ from django.core import validators
 from django import forms
 from .models import Artist, Show
 
+from .models import Locality
+
 class ShowRegistration(forms.ModelForm):
     class Meta:
         model = Show 
@@ -27,3 +29,10 @@ class ArtistDeleteForm(forms.ModelForm):
     class Meta:
         model = Artist
         fields = []
+        
+
+
+class LocalityFormCreation(forms.ModelForm):
+    class Meta:
+        model = Locality
+        fields = ['postal_code', 'locality']

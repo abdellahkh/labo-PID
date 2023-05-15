@@ -1,0 +1,24 @@
+[
+    {
+      "model": "catalogue.role",
+      "pk": 1,
+      "fields": {
+        "role": "admin"
+      }
+    },
+    {
+      "model": "catalogue.role",
+      "pk": 2,
+      "fields": {
+        "role": "member"
+      }
+    },
+    {
+      "model": "catalogue.role",
+      "pk": 3,
+      "fields": {
+        "role": "affiliate"
+      }
+    }
+  ]
+  

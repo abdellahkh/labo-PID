@@ -1,0 +1,44 @@
+[
+    {
+      "model": "reservation.locality",
+      "pk": 1,
+      "fields": {
+        "locality": "1000 Bruxelles"
+      }
+    },
+    {
+      "model": "reservation.locality",
+      "pk": 2,
+      "fields": {
+        "locality": "1020 Bruxelles"
+      }
+    },
+    {
+      "model": "reservation.locality",
+      "pk": 3,
+      "fields": {
+        "locality": "1030 Bruxelles"
+      }
+    },
+    {
+      "model": "reservation.locality",
+      "pk": 4,
+      "fields": {
+        "locality": "1040 Bruxelles"
+      }
+    },
+    {
+      "model": "reservation.locality",
+      "pk": 5,
+      "fields": {
+        "locality": "1050 Bruxelles"
+      }
+    },
+    {
+      "model": "reservation.locality",
+      "pk": 6,
+      "fields": {
+        "locality": "1060 Bruxelles"
+      }
+    }
+  ]

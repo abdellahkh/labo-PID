@@ -134,5 +134,13 @@
       "firstname": "Jhon",
       "lastname": "Rachid"
     }
+  },
+  {
+    "model": "reservation.artist",
+    "pk": 27,
+    "fields": {
+      "firstname": "Homer",
+      "lastname": "Lafesse"
+    }
   }
 ]
