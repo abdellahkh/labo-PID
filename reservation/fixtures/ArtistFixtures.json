@@ -1,22 +1,6 @@
 [
   {
     "model": "reservation.artist",
-    "pk": 1,
-    "fields": {
-      "firstname": "Daniel",
-      "lastname": "Marcelin"
-    }
-  },
-  {
-    "model": "reservation.artist",
-    "pk": 2,
-    "fields": {
-      "firstname": "Philippe",
-      "lastname": "Laurent"
-    }
-  },
-  {
-    "model": "reservation.artist",
     "pk": 3,
     "fields": {
       "firstname": "Marius",
