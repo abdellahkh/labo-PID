@@ -16,7 +16,7 @@ def show_all_type(request):
     })
 
 
-def show(request, type_id):
+def showType(request, type_id):
     try:
         type = Type.objects.get(id=type_id)
     except Type.DoesNotExist:
