@@ -154,24 +154,30 @@ def artistCreate(request):
 
 
 def editArtist(request, artist_id):
-    artist = get_object_or_404(Artist, id=artist_id)
+    artist = get_object_or_404(Artist, pk=artist_id)
 
     if request.method == 'POST':
         form = ArtistFormCreation(request.POST, instance=artist)
         if form.is_valid():
-            form.save()
-            messages.success(request, ("Artiste a bien ete modifier"))
-            return redirect('showArtist', artist_id=artist.id)
+            artist = form.save()
+            # Load existing data
+            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'r') as f:
+                data = json.load(f)
+            # Update artist data in fixtures
+            for item in data:
+                if item["model"] == "reservation.artist" and item["pk"] == artist.pk:
+                    item["fields"]["firstname"] = artist.firstname
+                    item["fields"]["lastname"] = artist.lastname
+                    break
+            # Save data back to file
+            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'w') as f:
+                json.dump(data, f)
+            return redirect('allArtists')
     else:
         form = ArtistFormCreation(instance=artist)
-
-    title = 'Modifier un artiste'
-
-    return render(request, 'artist/editArtist.html', {
-        'artist': artist,
-        'form': form,
-        'title': title
-    })
+    
+    title = "Modifier l'artiste"
+    return render(request, 'artist/editArtist.html', {'form': form, 'title': title,'artist': artist})
 
 
 def deleteArtist(request, artist_id):
