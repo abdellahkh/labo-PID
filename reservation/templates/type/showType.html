@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if types %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">All type</h4>
+        </div class="container p-1">
+        {% for type in types %}
+
+        <div class="container p-1">
+            <a href="/type/{{type.id}}" >{{ type }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% if type %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">All type</h4>
+        </div class="container p-1">
+        <div class="container p-1">
+            <a href="#">{{ type }}</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

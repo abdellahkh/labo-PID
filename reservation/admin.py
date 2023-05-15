@@ -29,9 +29,14 @@ class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'postal_code', 'locality')
 
+@admin.register(Type)
+class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'type')
+
+
 
 admin.site.register(Artist)
-admin.site.register(Type)
+
 admin.site.register(ArtisteType)
 admin.site.register(ArtistTypeShow)
 admin.site.register(Representation)
