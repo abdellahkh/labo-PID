@@ -8,10 +8,14 @@
         </div class="container p-1" >
         {% for artist in artists %}
             <div class="container p-1" >
-                {{ artist.firstname }}
-            </div>
+                <a href="/artist/{{artist.id}}/edit">{{ artist.firstname }}  {{ artist.lastname}}</a>
+                {% if user.is_superuser %}
+                <a class="btn btn-danger" href="/artist/{{artist.id}}/edit">Edit</a>
+                {% endif %}
+            </div>            
         {% endfor %}
     </div>
 </div>
 
 {% endblock %}
+

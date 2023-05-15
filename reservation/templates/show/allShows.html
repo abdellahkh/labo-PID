@@ -1,17 +1,73 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container p-5">
-    <div class="row">
-        <div class="col-sm-4">
-            <h4 class="text-center alert alert-info">All Shows</h4>
-        </div class="container p-1" >
-        {% for show in shows %}
-            <div class="container p-1" >
-                {{ show.title }}
+
+
+<div class="container">
+    <div class="p-3">
+        <h4 class="text-center alert alert-info">All Shows</h4>
+    </div>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if shows.has_previous %}
+                <li>
+                    <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
+                        aria-disabled="true">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-link">
+                    page {{shows.number}} of {{shows.paginator.num_pages}}
+                </li>
+                {% if shows.has_next %}
+                <li>
+                    <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <div class="row p-3">
+        {% for showd in shows %}
+        <div class="card m-3 col-sm" style="width: 18rem;">
+            <img src="{{showd.poster_url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ showd.title }}</h5>
+                <p class="card-text">{{ showd.description }}</p>
             </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Lieu : {{ showd.location_id }}</li>
+                <li class="list-group-item">Prix: {{ showd.price }} Euro</li>
+            </ul>
+            <div class="card-body">
+                <a href="/show/{{showd.id}}" class="card-link btn btn-info">Consulter</a>
+                <a href="#" class="card-link btn btn-success">Reserver</a>
+            </div>
+        </div>
+
         {% endfor %}
     </div>
+
+</div>
+<div class="d-flex justify-content-center">
+    <nav aria-label="...">
+        <ul class="pagination">
+            {% if shows.has_previous %}
+            <li>
+                <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
+                    aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+            <li class="page-link">
+                page {{shows.number}} of {{shows.paginator.num_pages}}
+            </li>
+            {% if shows.has_next %}
+            <li>
+                <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 
 {% endblock %}

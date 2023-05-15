@@ -12,42 +12,45 @@ class Locality(models.Model):
 
 
 class Location(models.Model):
-    slug = models.CharField(max_length=60)
+    slug = models.CharField(max_length=60, unique=True)
     designation = models.CharField(max_length=60)
     address = models.CharField(max_length=255)
-    locality_id = models.ForeignKey(Locality, blank=True, null=True, on_delete=models.CASCADE)
+    locality_id = models.ForeignKey(Locality, blank=True, null=True, on_delete=models.SET_NULL, related_name='locations')
     website = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.slug
+        return self.designation
 
 
 class Show(models.Model):
-    slug = models.CharField(max_length=60)
-    title = models.CharField('Show Title', max_length=255)
-    description = models.TextField('Show Description')
-    poster_url = models.CharField('Show Image', max_length=255)
+    slug = models.CharField(max_length=60, blank = True, null = True)
+    title = models.CharField('Show Title', max_length=255, blank = True, null = True)
+    description = models.TextField('Show Description', blank = True, null = True)
+    poster_url = models.CharField('Show Image', max_length=255, blank = True, null = True)
     location_id = models.ForeignKey(Location, blank = True, null = True, on_delete=models.SET_NULL)
-    bookable = models.BooleanField()
-    price = models.FloatField()
+    bookable = models.BooleanField(blank = True, null = True)
+    price = models.FloatField(blank = True, null = True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
         return self.slug
-
-class Artist(models.Model):
-    firstname = models.CharField(max_length=60)
-    lastname = models.CharField(max_length=60)
-
-    def __str__(self):
-        return self.firstname + '' + self.lastname
 
 class Type(models.Model):
     type= models.CharField(max_length=60)
 
     def __str__(self):
         return self.type
+
+
+class Artist(models.Model):
+    firstname = models.CharField(max_length=60)
+    lastname = models.CharField(max_length=60)
+    types = models.ManyToManyField(Type, through='ArtisteType')
+
+    def __str__(self):
+        return self.firstname + '' + self.lastname
+
 
 
 class ArtisteType(models.Model):
@@ -79,12 +82,6 @@ class RepresentationUser(models.Model):
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField()
-
-
-
-
-
-
 
 
 class Role(models.Model):
