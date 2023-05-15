@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from models import Type
+from reservation.models import Type
 
 
 # Create your views here.
