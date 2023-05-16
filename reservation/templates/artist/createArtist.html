@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 
+{% block title %}NYGMA - Create Artist{% endblock %}
+
 {% block content %}
-    <h1>{{ title }}</h1>
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <div class="col-lg-6 shadow p-4">
+                <h3 class="text-center">Créer un artiste</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <input class="btn btn-success" type="submit" value="Créer">
-    </form>
+                    <div class="form-group text-center">
+                        <input class="btn btn-success" type="submit" value="Créer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
