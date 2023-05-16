@@ -50,7 +50,7 @@ def register(request):
 def addshow(request):
     if request.user.is_superuser:
         if request.method == 'POST':
-            fm = ShowRegistration(request.POST)
+            fm = ShowRegistration(request.POST, request.FILES)
             if fm.is_valid():
                 sl = fm.cleaned_data['slug']
                 ti = fm.cleaned_data['title']
@@ -59,10 +59,12 @@ def addshow(request):
                 li = fm.cleaned_data['location_id']
                 bk = fm.cleaned_data['bookable']
                 pr = fm.cleaned_data['price']
+                im = fm.cleaned_data['image']
                 reg = Show(slug=sl, title=ti, description=des,
-                        poster_url=pu, location_id=li, bookable=bk, price=pr)
+                        poster_url=pu, location_id=li, bookable=bk, price=pr, image=im)
                 reg.save()
                 fm = ShowRegistration()
+                messages.success(request, ("Sauvegarde reussi"))
         else:
             fm = ShowRegistration()
     else:
