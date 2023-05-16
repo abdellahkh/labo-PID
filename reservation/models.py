@@ -58,6 +58,9 @@ class ArtisteType(models.Model):
     artist_id = models.ForeignKey(Artist, blank = True, null = True, on_delete=models.CASCADE)
     type_id = models.ForeignKey(Type, blank=True, null=True, on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = "artist_type"
+
 
 class ArtistTypeShow(models.Model):
     artiste_type_id = models.ForeignKey(ArtisteType, blank = True, null=True, on_delete=models.CASCADE)
