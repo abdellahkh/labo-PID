@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from os.path import join
-from .forms import ArtistDeleteForm, ShowRegistration, ArtistFormCreation
+from .forms import ArtistDeleteForm, ShowRegistration, ArtistFormCreation, UpdateUserForm
 from .models import *
 from datetime import datetime
 from django.contrib import messages
@@ -249,3 +249,29 @@ def showLocality(request, locality_id):
     title = 'Fiche localite'
 
     return render(request, 'localities/localities.html', {'locality': locality, 'title': title})
+
+
+
+
+def displayUserAccount(request, user_id):
+    from django.contrib.auth.models import User
+    from members.forms import RegisterUserForm
+    
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        form = RegisterUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ("Modification reussi"))
+            return redirect('home')
+    else:
+        form = RegisterUserForm(instance=user)
+
+    title = 'Modifier son profil'
+
+    return render(request, 'registration/myaccount.html', {
+        'show': user,
+        'form': form,
+        'title': title
+    })

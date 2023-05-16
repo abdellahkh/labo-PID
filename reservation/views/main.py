@@ -30,3 +30,6 @@ def login(request):
 
 def register(request):
     return render(request, 'registration/register.html')
+
+def displayUserAccount(request):
+    return render(request, 'registration/register.html')
