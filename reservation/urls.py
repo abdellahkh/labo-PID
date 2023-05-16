@@ -22,7 +22,7 @@ urlpatterns = [
     path('locality/', allLocality, name='locality_index'),
     path('locality/<int:locality_id>', showLocality, name='locality_show'),
 
-    path('myaccount/<int:user_id>', displayUserAccount, name='myaccount' ),
+    path('myaccount/', displayUserAccount, name='myaccount' ),
 
 
     #path('role/', views.role.index, name='role_index'),

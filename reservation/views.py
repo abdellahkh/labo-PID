@@ -271,20 +271,21 @@ def showLocality(request, locality_id):
 
 
 
-def displayUserAccount(request, user_id):
+def displayUserAccount(request):
     from django.contrib.auth.models import User
-    from members.forms import RegisterUserForm
     
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, id=request.user.id)
 
     if request.method == 'POST':
-        form = RegisterUserForm(request.POST, instance=user)
+        form = UpdateUserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, ("Modification reussi"))
             return redirect('home')
+        else:
+            messages.success(request, ("form invalid"))
     else:
-        form = RegisterUserForm(instance=user)
+        form = UpdateUserForm(instance=user)
 
     title = 'Modifier son profil'
 
