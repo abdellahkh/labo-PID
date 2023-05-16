@@ -28,6 +28,7 @@ class Show(models.Model):
     title = models.CharField('Show Title', max_length=255, blank = True, null = True)
     description = models.TextField('Show Description', blank = True, null = True)
     poster_url = models.CharField('Show Image', max_length=255, blank = True, null = True)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
     location_id = models.ForeignKey(Location, blank = True, null = True, on_delete=models.SET_NULL)
     bookable = models.BooleanField(blank = True, null = True)
     price = models.FloatField(blank = True, null = True)

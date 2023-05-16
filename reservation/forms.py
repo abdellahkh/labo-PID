@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 class ShowRegistration(forms.ModelForm):
     class Meta:
         model = Show 
-        fields = [ 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price' ]
+        fields = [ 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image' ]
+        
         widgets = {   #@TODO
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
