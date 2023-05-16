@@ -1,4 +1,3 @@
-
 from django import views
 from django.urls import path
 from .views import *
@@ -22,8 +21,6 @@ urlpatterns = [
     path('locality/', allLocality, name='locality_index'),
     path('locality/<int:locality_id>', showLocality, name='locality_show'),
 
-    path('myaccount/', displayUserAccount, name='myaccount' ),
-
 
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),
@@ -33,6 +30,5 @@ urlpatterns = [
     #path('show/<int:show_id>', views.show_detail.show, name='show_show'),
     #path('representation/', views.representation.index, name='representation_index'),
     #path('representation/<int:representation_id>', views.representation.show, name='representation_show'),
-
 
 ]
