@@ -25,7 +25,12 @@
       {% for show in shows %}
 
       <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-        <img src="{{show.poster_url}}" class="d-block w-100" alt="...">
+        {% if show.image %}
+        <img src="{{show.image}}" class="d-block w-100" alt="...">    
+        {% else %}
+         <img src="{{show.poster_url}}" class="d-block w-100" alt="...">
+        {% endif %}
+        
         <div class="carousel-caption d-none d-md-block">
           <h5>{{show.title}}</h5>
           <p>{{show.description}}</p>

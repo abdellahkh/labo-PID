@@ -3,12 +3,12 @@
 {% block title %}NYGMA - Add Show{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row mt-5 mb-5">
-        <div class="col-lg-12 d-flex justify-content-center">
-            <div class="col-lg-6 shadow p-4">
-                <h3 class="text-center">Ajouter un nouveau spectacle</h3>
-                <form action="" method="POST">
+{% if user.is_superuser %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-8">
+            <h4 class="text-center alert alert-info">Ajouter un nouveau spectacle</h4>
+                <form action="" method=POST enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_slug">Slug</label>
@@ -48,4 +48,13 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="p-4">
+  <h1>Vous n'avez pas les droits pour accedez a la page</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+
 {% endblock %}
