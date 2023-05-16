@@ -48,22 +48,26 @@ def register(request):
 
 
 def addshow(request):
-    if request.method == 'POST':
-        fm = ShowRegistration(request.POST)
-        if fm.is_valid():
-            sl = fm.cleaned_data['slug']
-            ti = fm.cleaned_data['title']
-            des = fm.cleaned_data['description']
-            pu = fm.cleaned_data['poster_url']
-            li = fm.cleaned_data['location_id']
-            bk = fm.cleaned_data['bookable']
-            pr = fm.cleaned_data['price']
-            reg = Show(slug=sl, title=ti, description=des,
-                       poster_url=pu, location_id=li, bookable=bk, price=pr)
-            reg.save()
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            fm = ShowRegistration(request.POST)
+            if fm.is_valid():
+                sl = fm.cleaned_data['slug']
+                ti = fm.cleaned_data['title']
+                des = fm.cleaned_data['description']
+                pu = fm.cleaned_data['poster_url']
+                li = fm.cleaned_data['location_id']
+                bk = fm.cleaned_data['bookable']
+                pr = fm.cleaned_data['price']
+                reg = Show(slug=sl, title=ti, description=des,
+                        poster_url=pu, location_id=li, bookable=bk, price=pr)
+                reg.save()
+                fm = ShowRegistration()
+        else:
             fm = ShowRegistration()
     else:
-        fm = ShowRegistration()
+        messages.success(request, ("Vous n'avez pas les droits"))
+        return redirect('home')
     return render(request, 'show/addshow.html', {'form': fm})
 
 
@@ -80,18 +84,22 @@ def allShows(request):
 
 
 def editShow(request, show_id):
-    show = get_object_or_404(Show, id=show_id)
+    if request.user.is_superuser:
+        show = get_object_or_404(Show, id=show_id)
 
-    if request.method == 'POST':
-        form = ShowRegistration(request.POST, instance=show)
-        if form.is_valid():
-            form.save()
-            messages.success(request, ("Artiste a bien ete modifier"))
-            return redirect('show_detail', show_id=show.id)
+        if request.method == 'POST':
+            form = ShowRegistration(request.POST, instance=show)
+            if form.is_valid():
+                form.save()
+                messages.success(request, ("Artiste a bien ete modifier"))
+                return redirect('show_detail', show_id=show.id)
+        else:
+            form = ShowRegistration(instance=show)
+
+        title = 'Modifier un show'
     else:
-        form = ShowRegistration(instance=show)
-
-    title = 'Modifier un show'
+        messages.success(request, ("Vous n'avez pas les droits"))
+        return redirect('home')
 
     return render(request, 'show/updateShow.html', {
         'show': show,
@@ -127,46 +135,53 @@ def showArtist(request, artist_id):
 
 
 def artistCreate(request):
-    if request.method == 'POST':
-        form = ArtistFormCreation(request.POST)
-        if form.is_valid():
-            artist = form.save()
-            # Load existing data
-            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'r') as f:
-                data = json.load(f)
-            # Add new artist
-            data.append({
-                "model": "reservation.artist",
-                "pk": artist.pk,
-                "fields": {
-                    "firstname": artist.firstname,
-                    "lastname": artist.lastname,
-                }
-            })
-            # Save data back to file
-            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'w') as f:
-                json.dump(data, f)
-            return redirect('allArtists')
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = ArtistFormCreation(request.POST)
+            if form.is_valid():
+                artist = form.save()
+                # Load existing data
+                with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'r') as f:
+                    data = json.load(f)
+                # Add new artist
+                data.append({
+                    "model": "reservation.artist",
+                    "pk": artist.pk,
+                    "fields": {
+                        "firstname": artist.firstname,
+                        "lastname": artist.lastname,
+                    }
+                })
+                # Save data back to file
+                with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'w') as f:
+                    json.dump(data, f)
+                return redirect('allArtists')
+        else:
+            form = ArtistFormCreation()
+        title = "Creer un artiste"
     else:
-        form = ArtistFormCreation()
-    title = "Creer un artiste"
+        messages.success(request, ("Vous n'avez pas les droits"))
+        return redirect('home')
     return render(request, 'artist/createArtist.html', {'form': form, 'title': title})
 
 
 def editArtist(request, artist_id):
-    artist = get_object_or_404(Artist, id=artist_id)
+    if request.user.is_superuser:
+        artist = get_object_or_404(Artist, id=artist_id)
 
-    if request.method == 'POST':
-        form = ArtistFormCreation(request.POST, instance=artist)
-        if form.is_valid():
-            form.save()
-            messages.success(request, ("Artiste a bien ete modifier"))
-            return redirect('showArtist', artist_id=artist.id)
+        if request.method == 'POST':
+            form = ArtistFormCreation(request.POST, instance=artist)
+            if form.is_valid():
+                form.save()
+                messages.success(request, ("Artiste a bien ete modifier"))
+                return redirect('showArtist', artist_id=artist.id)
+        else:
+            form = ArtistFormCreation(instance=artist)
+
+        title = 'Modifier un artiste'
     else:
-        form = ArtistFormCreation(instance=artist)
-
-    title = 'Modifier un artiste'
-
+        messages.success(request, ("Vous n'avez pas les droits"))
+        return redirect('home')
     return render(request, 'artist/editArtist.html', {
         'artist': artist,
         'form': form,
@@ -175,33 +190,36 @@ def editArtist(request, artist_id):
 
 
 def deleteArtist(request, artist_id):
-    try:
-        artist = Artist.objects.get(id=artist_id)
-    except Artist.DoesNotExist:
-        raise Http404('Artist inexistant')
+    if request.user.is_superuser:
+        try:
+            artist = Artist.objects.get(id=artist_id)
+        except Artist.DoesNotExist:
+            raise Http404('Artist inexistant')
 
-    if request.method == 'POST':
-        form = ArtistDeleteForm(request.POST, instance=artist)
-        if form.is_valid():
-            # Load existing data
-            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'r') as f:
-                data = json.load(f)
+        if request.method == 'POST':
+            form = ArtistDeleteForm(request.POST, instance=artist)
+            if form.is_valid():
+                # Load existing data
+                with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'r') as f:
+                    data = json.load(f)
 
-            # Filter out the deleted artist
-            data = [item for item in data if item["pk"] != artist_id]
+                # Filter out the deleted artist
+                data = [item for item in data if item["pk"] != artist_id]
 
-            # Save the data back to the file
-            with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'w') as f:
-                json.dump(data, f, indent=2)
+                # Save the data back to the file
+                with open(join(settings.BASE_DIR, 'reservation', 'fixtures', 'ArtistFixtures.json'), 'w') as f:
+                    json.dump(data, f, indent=2)
 
-            artist.delete()
-            messages.success(request, ("Artiste a bien ete supprimer"))
-            return redirect('allArtists')
+                artist.delete()
+                messages.success(request, ("Artiste a bien ete supprimer"))
+                return redirect('allArtists')
+        else:
+            form = ArtistDeleteForm(instance=artist)
+
+        title = 'Supprimer un artiste'
     else:
-        form = ArtistDeleteForm(instance=artist)
-
-    title = 'Supprimer un artiste'
-
+        messages.success(request, ("Vous n'avez pas les droits"))
+        return redirect('home')
     return render(request, 'artist/deleteArtist.html', {
         'artist': artist,
         'form': form,
