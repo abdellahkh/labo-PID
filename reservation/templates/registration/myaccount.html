@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <h4>ma cible: {{ user }}</h4>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-success m-1" type="submit" value="Enregistrer">
+    <a class="btn btn-info m-1" href="{% url 'home' %}">Retour</a>
+  </form>
+{% endblock %}
+
+
