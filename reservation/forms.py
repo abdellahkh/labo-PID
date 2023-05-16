@@ -15,14 +15,22 @@ class ShowRegistration(forms.ModelForm):
             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
             'location_id': forms.TextInput(attrs={'class': 'form-control'}),
             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}), 
-            'price': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
 class ArtistFormCreation(forms.ModelForm):
     class Meta:
         model = Artist
-        fields = ['firstname','lastname']
+        fields = ['firstname', 'lastname']
+        labels = {
+            'firstname': 'Prénom',
+            'lastname': 'Nom',
+        }
+        widgets = {
+            'firstname': forms.TextInput(attrs={'class': 'form-control'}),
+            'lastname': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 
 
 class ArtistDeleteForm(forms.ModelForm):
