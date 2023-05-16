@@ -31,7 +31,7 @@ class Show(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     location_id = models.ForeignKey(Location, blank = True, null = True, on_delete=models.SET_NULL)
     bookable = models.BooleanField(blank = True, null = True)
-    price = models.FloatField(blank = True, null = True)
+    price = models.DecimalField(blank = True, null = True, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     #toddo ajouter onetomany ; un show a plusieurs representation a faire dans un pre;ier temps sans strip
     def __str__(self):

@@ -15,7 +15,6 @@ class ShowRegistration(forms.ModelForm):
             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
             'location_id': forms.TextInput(attrs={'class': 'form-control'}),
             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}), 
-            'price': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
