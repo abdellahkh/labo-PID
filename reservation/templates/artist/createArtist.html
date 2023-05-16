@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}NYGMA - Create Artist{% endblock %}
-
 {% block content %}
 {% if user.is_superuser %}
 <div class="container">
@@ -24,13 +22,6 @@
             </form>
         </div>
     </div>
-</div>
-{% else %}
-<div class="p-4">
-    <h1 class="text-center">Vous n'avez pas les droits pour accéder à la page</h1>
-</div>
-<div class="container p-3 text-center">
-    <a class="btn btn-success" href="{% url 'login' %}">Login</a>
 </div>
 {% endif %}
 {% endblock %}

@@ -35,10 +35,15 @@ class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 
+@admin.register(ArtistTypeShow)
+class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ()
+
+
 admin.site.register(Artist)
 
 admin.site.register(ArtisteType)
-admin.site.register(ArtistTypeShow)
+
 admin.site.register(Representation)
 admin.site.register(User)
 admin.site.register(RepresentationUser)
