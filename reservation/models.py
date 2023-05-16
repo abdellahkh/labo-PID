@@ -32,7 +32,7 @@ class Show(models.Model):
     bookable = models.BooleanField(blank = True, null = True)
     price = models.FloatField(blank = True, null = True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    
+    #toddo ajouter onetomany ; un show a plusieurs representation a faire dans un pre;ier temps sans strip
     def __str__(self):
         return self.slug
 
@@ -78,7 +78,7 @@ class User(models.Model):
     def __str__(self):
         return self.login
 
-class RepresentationUser(models.Model):
+class RepresentationUser(models.Model): #la reservation
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField()
