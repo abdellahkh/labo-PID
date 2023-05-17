@@ -65,8 +65,6 @@ def addshow(request):
                 reg.save()
                 fm = ShowRegistration()
                 messages.success(request, ("Sauvegarde reussi"))
-            else:
-                messages.error(request, ("-------Sauvegarde__impossible------"))
         else:
             fm = ShowRegistration()
     else:
