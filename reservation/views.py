@@ -70,7 +70,8 @@ def addshow(request):
     else:
         messages.success(request, ("Vous n'avez pas les droits"))
         return redirect('home')
-    return render(request, 'show/addshow.html', {'form': fm})
+    locations = Location.objects.all()
+    return render(request, 'show/addshow.html', {'form': fm, 'locs': locations})
 
 
 def allShows(request):
