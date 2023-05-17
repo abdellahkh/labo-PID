@@ -8,13 +8,14 @@ class ShowRegistration(forms.ModelForm):
         model = Show 
         fields = [ 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image' ]
         
-        widgets = {   #@TODO
+        widgets = {   #image added
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
             'location_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}), 
+            'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}), 
         }
 
 

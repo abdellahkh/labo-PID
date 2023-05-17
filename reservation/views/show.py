@@ -18,7 +18,7 @@ def displayShow(request, show_id):
 
 def addshow(request):
     if request.method == 'POST':
-        fm = ShowRegistration(request.POST)
+        fm = ShowRegistration(request.POST, request.FILES)
         if fm.is_valid():
             sl = fm.cleaned_data['slug']
             ti = fm.cleaned_data['title']
@@ -29,6 +29,8 @@ def addshow(request):
             pr = fm.cleaned_data['price']
             reg = Show(slug=sl, title=ti, description=des,
                        poster_url=pu, location_id=li, bookable=bk, price=pr)
+            if 'image' in request.FILES:
+                reg.image = request.FILES['image']
             reg.save()
             fm = ShowRegistration()
     else:
