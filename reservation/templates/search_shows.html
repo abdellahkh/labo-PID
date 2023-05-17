@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+    <div class="card">
+        <h1>Ma recherche: ici sera afficher le resultat de la recherche</h1>
+        {% if searched %}
+            <h3>Ta rechercher: {{ searched }}</h3>
+            {% for show in showsResults %}
+                {{show}}
+            {% endfor %}
+        {% else %}
+            <h3>Pas de rechercher</h3>
+        {% endif  %}
+      </div>
+     
+</div>
+
+
+{% endblock %}
