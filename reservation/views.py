@@ -112,11 +112,13 @@ def editShow(request, show_id):
     else:
         messages.success(request, ("Vous n'avez pas les droits"))
         return redirect('home')
-
+    locations = Location.objects.all()
     return render(request, 'show/updateShow.html', {
         'show': show,
         'form': form,
-        'title': title
+        'title': title,
+        'locs' : locations,
+
     })
 
 
