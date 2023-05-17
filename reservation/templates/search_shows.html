@@ -6,15 +6,17 @@
 <div class="container">
 
     <div class="card">
-        <h1>Ma recherche: ici sera afficher le resultat de la recherche</h1>
-        {% if searched %}
-            <h3>Ta rechercher: {{ searched }}</h3>
-            {% for show in showsResults %}
-                {{show}}
-            {% endfor %}
-        {% else %}
-            <h3>Pas de rechercher</h3>
-        {% endif  %}
+        <img src="{{show.poster_url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{show.title}}</h5>
+          <p class="card-text">{{ show.description }}</p>
+          <p class="card-text">{{ show.price }} Eur</p>
+          <p class="card-text">{{ show.location }}</p>
+          <a href="#" class="btn btn-primary">Reserver</a>
+          {% if user.is_superuser %}
+          <a href="{{ show.id }}/edit" class="btn btn-danger">Modifier</a>
+          {% endif %}
+        </div>
       </div>
      
 </div>
