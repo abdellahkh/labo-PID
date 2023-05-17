@@ -65,12 +65,15 @@ def addshow(request):
                 reg.save()
                 fm = ShowRegistration()
                 messages.success(request, ("Sauvegarde reussi"))
+            else:
+                messages.error(request, ("-------Sauvegarde__impossible------"))
         else:
             fm = ShowRegistration()
     else:
         messages.success(request, ("Vous n'avez pas les droits"))
         return redirect('home')
-    return render(request, 'show/addshow.html', {'form': fm})
+    locations = Location.objects.all()
+    return render(request, 'show/addshow.html', {'form': fm, 'locs': locations})
 
 
 def allShows(request):
@@ -84,6 +87,15 @@ def allShows(request):
 
     return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
 
+def search_shows(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        showsResults = Show.objects.filter(title__contains=searched)
+        return render(request, "search_shows.html", {'searched': searched, 'showsResults' : showsResults})
+    else: 
+        return render(request, "search_shows.html",{})
+
+    
 
 def editShow(request, show_id):
     if request.user.is_superuser:
