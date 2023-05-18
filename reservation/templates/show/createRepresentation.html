@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}NYGMA - Add Show{% endblock %}
+
+{% block extra_head %}
+    <script>
+        $(function() {
+            $('.datetimepicker').datetimepicker({
+                icons: {
+                    time: 'fa fa-clock-o',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-crosshairs',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-times'
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+{% if user.is_superuser %}
+<div class="container">
+    <div class="row mt-5 mb-5 justify-content-center">
+        <div class="col-lg-6 shadow p-8">
+            <h3 class="text-center">Ajouter un Show</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-group">
+                    <div class="input-group date datetimepicker" data-target-input="nearest">
+                        {{ form.when }}
+                        <div class="input-group-append" data-target=".datetimepicker" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="p-4">
+  <h1>Vous n'avez pas les droits pour accéder à la page</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -82,6 +82,28 @@ def allShows(request):
 
     return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
 
+from django.shortcuts import render
+from .forms import RepresentationForm
+
+def createRepresentation(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = RepresentationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Sauvegarde réussie.")
+                return redirect('home')
+            else:
+                messages.error(request, "Impossible de sauvegarder le spectacle.")
+        else:
+            form = RepresentationForm()
+    else:
+        messages.error(request, "Vous n'avez pas les droits requis.")
+        return redirect('home')
+    return render(request, "show/createRepresentation.html", {'form': form})
+
+
+
 def search_shows(request):
     if request.method == "POST":
         searched = request.POST['searched']
