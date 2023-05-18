@@ -52,26 +52,23 @@ def addshow(request):
         if request.method == 'POST':
             fm = ShowRegistration(request.POST, request.FILES)
             if fm.is_valid():
-                sl = fm.cleaned_data['slug']
-                ti = fm.cleaned_data['title']
-                des = fm.cleaned_data['description']
-                pu = fm.cleaned_data['poster_url']
-                li = fm.cleaned_data['location_id']
-                bk = fm.cleaned_data['bookable']
-                pr = fm.cleaned_data['price']
-                im = fm.cleaned_data['image']
-                reg = Show(slug=sl, title=ti, description=des,
-                        poster_url=pu, location_id=li, bookable=bk, price=pr, image=im)
-                reg.save()
-                fm = ShowRegistration()
-                messages.success(request, ("Sauvegarde reussi"))
+                show = fm.save(commit=False)
+                show.save()
+                fm.save_m2m()  # Enregistrer les relations ManyToMany (representations)
+                messages.success(request, "Sauvegarde réussie.")
+                return redirect('home')
+            else:
+                messages.error(request, "Impossible de sauvegarder le spectacle.")
+                print(fm.errors)
         else:
             fm = ShowRegistration()
     else:
-        messages.success(request, ("Vous n'avez pas les droits"))
+        messages.error(request, "Vous n'avez pas les droits requis.")
         return redirect('home')
+    
     locations = Location.objects.all()
     return render(request, 'show/addshow.html', {'form': fm, 'locs': locations})
+
 
 
 def allShows(request):

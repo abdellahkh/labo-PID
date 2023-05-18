@@ -18,8 +18,13 @@ from .models import RoleUser
 # Register your models here.
 @admin.register(Show)
 class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'created_at')
-    filter_horizontal = ('representations',) 
+    list_display = ('id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'created_at', 'display_representations')
+    def display_representations(self, obj):
+        representations = Representation.objects.filter(show_id=obj.id) 
+        return ', '.join(str(r) for r in representations)
+
+    display_representations.short_description = 'Representations'
+    
 
     
 @admin.register(Location)
@@ -41,12 +46,17 @@ class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ()
 
+@admin.register(Representation)
+class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display=('show_id', 'when', 'location_id')
+
+
 
 admin.site.register(Artist)
 
 admin.site.register(ArtisteType)
 
-admin.site.register(Representation)
+
 admin.site.register(User)
 admin.site.register(RepresentationUser)
 admin.site.register(Role)
