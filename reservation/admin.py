@@ -4,6 +4,11 @@ from import_export.admin import ImportExportModelAdmin
 from .models import Show, Location, Locality, Type, ArtistTypeShow, Representation, User, RepresentationUser, Role, RoleUser
 
 
+class RepresentationInline(admin.StackedInline):
+    model = Representation
+    extra = 1
+
+
 class ShowAdminForm(forms.ModelForm):
     representations = forms.ModelMultipleChoiceField(
         queryset=Representation.objects.none(),
@@ -35,6 +40,7 @@ class ShowAdminForm(forms.ModelForm):
 class ShowAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     form = ShowAdminForm
     list_display = ('id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'created_at', 'display_representations')
+    inlines = [RepresentationInline]
 
     def display_representations(self, obj):
         representations = Representation.objects.filter(show_id=obj.id) 
