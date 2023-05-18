@@ -1,64 +1,74 @@
+from django import forms
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Show
-
-from .models import Location
-from .models import Locality
-from .models import Artist
-from .models import Type
-from .models import ArtisteType
-from .models import ArtistTypeShow
-from .models import Representation
-from .models import User
-from .models import RepresentationUser
-from .models import Role
-from .models import RoleUser
+from .models import Show, Location, Locality, Type, ArtistTypeShow, Representation, User, RepresentationUser, Role, RoleUser
 
 
-# Register your models here.
+class ShowAdminForm(forms.ModelForm):
+    representations = forms.ModelMultipleChoiceField(
+        queryset=Representation.objects.none(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Show
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ShowAdminForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            # Show has already been created, so populate existing representations
+            self.fields['representations'].queryset = Representation.objects.filter(show_id=self.instance.pk)
+
+    def save(self, commit=True):
+        show = super(ShowAdminForm, self).save(commit=commit)
+        if commit:
+            # Assign the show ID to selected representations
+            representations = self.cleaned_data['representations']
+            for representation in representations:
+                representation.show = show
+                representation.save()
+        return show
+
+
 @admin.register(Show)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class ShowAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    form = ShowAdminForm
     list_display = ('id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'created_at', 'display_representations')
+
     def display_representations(self, obj):
         representations = Representation.objects.filter(show_id=obj.id) 
         return ', '.join(str(r) for r in representations)
 
     display_representations.short_description = 'Representations'
-    
 
-    
+
 @admin.register(Location)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class LocationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'slug', 'designation')
 
 
 @admin.register(Locality)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class LocalityAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'postal_code', 'locality')
 
+
 @admin.register(Type)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class TypeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'type')
 
 
-
 @admin.register(ArtistTypeShow)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ()
+class ArtistTypeShowAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass
+
 
 @admin.register(Representation)
-class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display=('show_id', 'when', 'location_id')
-
-
-
-admin.site.register(Artist)
-
-admin.site.register(ArtisteType)
+class RepresentationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('show_id', 'when', 'location_id')
 
 
 admin.site.register(User)
 admin.site.register(RepresentationUser)
 admin.site.register(Role)
 admin.site.register(RoleUser)
-  
