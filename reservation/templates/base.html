@@ -26,11 +26,21 @@
           {% endfor %}
         {% endif %}
       </div>
-      <div class="container">
-        
-        {% block content %}
-
-        {% endblock %}
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <h1>ICI ca devrait etre a gauche</h1>
+          </div>
+          
+          <div class="col-8">
+            {% block content %}
+  
+            {% endblock %}
+          </div>
+          <div class="col">
+            <h1>ICI ca devrait aller a droite</h1>
+          </div>
+        </div>        
       </div>
     
     <footer class="bg-dark p-3 ">
