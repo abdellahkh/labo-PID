@@ -1,22 +1,29 @@
 from django.core import validators
 from django import forms
-from .models import Artist, Show
+from .models import Artist, Show, Representation
 from django.contrib.auth.models import User
 
 class ShowRegistration(forms.ModelForm):
+    representations = forms.ModelMultipleChoiceField(
+        queryset=Representation.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+
     class Meta:
         model = Show 
-        fields = [ 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image' ]
+        fields = ['slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image', 'representations']
         
-        widgets = {   #image added
+        widgets = {
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
             'location_id': forms.TextInput(attrs={'class': 'form-control'}),
             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'image': forms.FileInput(attrs={'class': 'form-control'}), 
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
+
 
 
 class ArtistFormCreation(forms.ModelForm):

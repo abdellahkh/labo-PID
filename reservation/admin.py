@@ -19,7 +19,9 @@ from .models import RoleUser
 @admin.register(Show)
 class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'created_at')
+    filter_horizontal = ('representations',) 
 
+    
 @admin.register(Location)
 class UserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'slug', 'designation')
