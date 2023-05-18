@@ -5,6 +5,7 @@ from .views import *
 from . import views
 urlpatterns = [
     path('',home, name="home"),
+    path('',allRepresentations),
     path('addshow',addshow, name="addshow"),
     path('all_shows', allShows , name="allShows"),
     path('show/<int:show_id>', displayShow , name="show_detail" ),

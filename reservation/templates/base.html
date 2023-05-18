@@ -1,67 +1,91 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <!-- Bootstrap DateTimePicker CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+  <title>{% block title %} {% endblock%}</title>
+  <style>
+    .main-content {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+  {% if messages %}
+  {% for message in messages %}
 
-    <title>{% block title %} {% endblock%}</title>
-  </head>
-  <body>
-    {% include 'navbar.html' %}
-      <div class="container">
-        {% if messages %}
-          {% for message in messages %}
+  <div class="alert {% if user.is_authenticated %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show m-3" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-            <div class="alert {% if user.is_authenticated %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show m-3" role="alert">
-              {{message}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 sidebar-left">
+      <!-- Contenu de la sidebar gauche -->
+      <h1>Representations</h1>
+      {% for representation in representations  %}
+
+      <div class="col-12 ml-1 p-1">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"> {{representation.show_id.title}}</h5>
+            <p class="card-text">{{representation.location_id.locality_id}}</p>
+            <p class="card-text">{{representation.location_id.designation}}</p>
+            <p class="card-text">{{representation.when}}</p>
+            <div class="card-text">
+              <div class="container">
+                <div class="row">
+                  <a href="#" class="col btn btn-primary">Consultez</a>
+                  <p class="col">{{representation.show_id.price}}eur</p> 
+                </div>
+                
+              </div>
+              
             </div>
-
-          {% endfor %}
-        {% endif %}
+            
+          </div>
+        </div>
       </div>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col">
-            <h1>ICI ça devrait être à gauche</h1>
-          </div>
-          
-          <div class="col-8">
-            {% block content %}
 
-            {% endblock %}
-          </div>
-          <div class="col">
-            <h1>ICI ça devrait aller à droite</h1>
-          </div>
-        </div>        
-      </div>
-    
-    <footer class="bg-dark p-3 ">
-        <p class="text-center text-white"> Projet Integration developpement</p>
-        <p class="text-center text-white"> Realise par : Kh'leeh Abdellah; Boutiebi Monir, Sennan Nordin, Gaëtan Coton</p>
+      {% endfor %}
+    </div>
 
-    </footer>
+    <div class="col-md-8 main-content">
+      <!-- Contenu principal de la page -->
+      {% block content %}
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      {% endblock %}
+    </div>
+    <div class="col-md-2 sidebar-right">
+      <!-- Contenu de la sidebar droite -->
+      <h1>ICI ca devrait aller a droite</h1>
+    </div>
+  </div>
+</div>
 
-    <!-- Bootstrap DateTimePicker JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<footer class="bg-dark p-3">
+  <p class="text-center text-white"> Projet Integration developpement</p>
+  <p class="text-center text-white"> Realise par : Kh'leeh Abdellah; Boutiebi Monir, Sennan Nordin, Gaëtan Coton</p>
+</footer>
 
-    {% block extra_head %}{% endblock %}
-  </body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
 </html>
