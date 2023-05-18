@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
     shows = Show.objects.all()
+    representationList = Representation.objects.all()
 
     month = month.capitalize()
     month_number = list(calendar.month_name).index(month)
@@ -36,7 +37,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
     current_year = now.year
     current_month = now.month
 
-    return render(request, 'main/home.html', {'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
+    return render(request, 'main/home.html', {'representations':representationList,'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
 
 
 def login(request):
@@ -112,7 +113,11 @@ def search_shows(request):
     else: 
         return render(request, "search_shows.html",{})
 
-    
+
+def allRepresentations(request):
+    representationList = Representation.objects.all()
+    return render(request, 'base.html', {'representations':representationList})
+
 
 def editShow(request, show_id):
     if request.user.is_superuser:
