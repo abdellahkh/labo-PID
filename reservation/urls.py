@@ -27,6 +27,9 @@ urlpatterns = [
     path('search_shows/', search_shows, name='search_shows' ),
 
 
+    path('representation/create', createRepresentation, name='createRepresentation'),
+
+
 
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),

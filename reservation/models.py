@@ -68,7 +68,7 @@ class ArtistTypeShow(models.Model):
 
 class Representation(models.Model):
     show_id = models.ForeignKey(Show, blank=True, null=True, on_delete=models.CASCADE)
-    when = models.DateTimeField()
+    when = models.DateTimeField(blank=True, null=True)
     location_id = models.ForeignKey(Location, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):

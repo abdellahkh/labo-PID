@@ -94,3 +94,13 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
+
+
+class RepresentationForm(forms.ModelForm):
+    class Meta:
+        model = Representation
+        fields = ['show_id', 'when', 'location_id']
+        widgets = {
+            'when': forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'}),
+        }
