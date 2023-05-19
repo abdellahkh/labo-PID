@@ -1,6 +1,6 @@
 from django.core import validators
 from django import forms
-from .models import Artist, Show, Representation
+from .models import Artist, RepresentationUser, Show, Representation
 from django.contrib.auth.models import User
 
 # class ShowRegistration(forms.ModelForm):
@@ -94,3 +94,22 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
+
+
+class RepresentationForm(forms.ModelForm):
+    class Meta:
+        model = Representation
+        fields = ['show_id', 'when', 'location_id']
+        widgets = {
+            'when': forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'}),
+        }
+
+
+# class UserRepresentationForm(forms.ModelForm):
+#     class Meta:
+#         model = RepresentationUser
+#         fields = ['show_id', 'when', 'location_id']
+#         widgets = {
+#             'when': forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'}),
+#         }

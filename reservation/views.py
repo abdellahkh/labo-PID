@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime('%B')):
     shows = Show.objects.all()
-    representationList = Representation.objects.all()
+    
 
     month = month.capitalize()
     month_number = list(calendar.month_name).index(month)
@@ -37,7 +37,11 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
     current_year = now.year
     current_month = now.month
 
-    return render(request, 'main/home.html', {'representations':representationList,'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
+    p = Paginator(Representation.objects.all(), 3)
+    page = request.GET.get('page')
+    representation = p.get_page(page)
+
+    return render(request, 'main/home.html', {'representations':representation,'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
 
 
 def login(request):
@@ -71,7 +75,6 @@ def addshow(request):
     return render(request, 'show/addshow.html', {'form': fm, 'locs': locations})
 
 
-
 def allShows(request):
     # shows = Show.objects.all().order_by('?')
     shows_list = Show.objects.all()
@@ -81,7 +84,35 @@ def allShows(request):
     page = request.GET.get('page')
     show = p.get_page(page)
 
-    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
+    p = Paginator(Representation.objects.all(), 3)
+    page = request.GET.get('page')
+    representation = p.get_page(page)
+
+    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show, 'representations': representation})
+
+from django.shortcuts import render
+from .forms import RepresentationForm
+
+def createRepresentation(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = RepresentationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Sauvegarde réussie.")
+                return redirect('home')
+            else:
+                messages.error(request, "Impossible de sauvegarder le spectacle.")
+        else:
+            form = RepresentationForm()
+    else:
+        messages.error(request, "Vous n'avez pas les droits requis.")
+        return redirect('home')
+    return render(request, "show/createRepresentation.html", {'form': form})
+
+def representationReserver(request, show_id):
+    representationList = Representation.objects.filter(show_id=show_id)
+    return render(request, 'show/representationReserver.html', {'representationList': representationList})
 
 def search_shows(request):
     if request.method == "POST":
@@ -91,10 +122,6 @@ def search_shows(request):
     else: 
         return render(request, "search_shows.html",{})
 
-
-def allRepresentations(request):
-    representationList = Representation.objects.all()
-    return render(request, 'base.html', {'representations':representationList})
 
 
 def editShow(request, show_id):
@@ -132,11 +159,12 @@ def allArtists(request):
 def displayShow(request, show_id):
     try:
         show = Show.objects.get(id=show_id)
+        representationList = Representation.objects.filter(show_id=show_id)
     except Show.DoesNotExist:
         raise Http404('Pas de show identifier')
 
     title = 'Fiche d\'un show'
-    return render(request, "show/show.html", {'show': show, 'title': title})
+    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList})
 
 
 def showArtist(request, artist_id):
