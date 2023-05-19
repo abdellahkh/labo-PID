@@ -41,7 +41,9 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
     page = request.GET.get('page')
     representation = p.get_page(page)
 
-    return render(request, 'main/home.html', {'representations':representation,'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
+    representation_user = Representation.objects.all()
+
+    return render(request, 'main/home.html', {'representations':representation, 'representation_user':representation_user ,'shows': shows, 'year': year, 'month': month, 'month_number ': month_number, 'cal': cal, 'current_year': current_year, 'current_month': current_month})
 
 
 def login(request):

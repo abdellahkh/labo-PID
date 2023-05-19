@@ -74,7 +74,7 @@ class Representation(models.Model):
     location_id = models.ForeignKey(Location, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return str(self.when)
+        return f"{self.show_id} - {self.when} - {self.location_id}"
 
 
 class User(models.Model):
