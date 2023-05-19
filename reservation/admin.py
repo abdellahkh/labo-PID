@@ -12,7 +12,9 @@ class RepresentationInline(admin.StackedInline):
 class ShowAdminForm(forms.ModelForm):
     representations = forms.ModelMultipleChoiceField(
         queryset=Representation.objects.none(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        required = False
+
     )
 
     class Meta:
