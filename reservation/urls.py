@@ -5,7 +5,6 @@ from .views import *
 from . import views
 urlpatterns = [
     path('',home, name="home"),
-    path('',allRepresentations),
     path('addshow',addshow, name="addshow"),
     path('all_shows', allShows , name="allShows"),
     path('show/<int:show_id>', displayShow , name="show_detail" ),
@@ -29,7 +28,7 @@ urlpatterns = [
 
 
     path('representation/create', createRepresentation, name='createRepresentation'),
-
+    path('representation/<int:show_id>/reserver', representationReserver , name='representationReserver'),
 
 
     #path('role/', views.role.index, name='role_index'),

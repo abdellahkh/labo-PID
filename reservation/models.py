@@ -30,12 +30,14 @@ class Show(models.Model):
     bookable = models.BooleanField(blank=True, null=True)
     price = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+    representations = models.ManyToManyField('Representation', blank=True)
     
     def get_representations(self):
-        return Representation.objects.filter(show_id=self.pk)
+        return self.representations.all()
 
     def __str__(self):
         return self.slug
+
 
 class Type(models.Model):
     type = models.CharField(max_length=60)
@@ -72,7 +74,7 @@ class Representation(models.Model):
     location_id = models.ForeignKey(Location, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return str(self.when)
+        return f"{self.show_id} - {self.when} - {self.location_id}"
 
 
 class User(models.Model):
@@ -88,6 +90,7 @@ class User(models.Model):
 
 
 class RepresentationUser(models.Model):
+    from django.contrib.auth.models import User
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField()
