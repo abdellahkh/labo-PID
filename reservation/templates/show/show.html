@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container m-3">
   <div class="row">
     <div class="col-9">
       <div class="card">
         <img src="{{ show.poster_url }}" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{ show.title }}</h5>
+          <h2 class="card-title">{{ show.title }}</h2>
           <p class="card-text">{{ show.description }}</p>
           <p class="card-text"><strong>Prix:</strong> {{ show.price }} EUR</p>
           {% if not user.is_authenticated %}
-          <a href="{% url 'login' %}" class="btn btn-danger">Se connecter</a>
+          <a href="{% url 'login' %}" class="btn btn-info">Se connecter</a>
           {% endif %}
           {% if user.is_superuser %}
           <a href="{{ show.id }}/edit" class="btn btn-danger">Modifier</a>
@@ -22,6 +22,7 @@
     <div class="col">
       <h4>Dates Disponibles</h4>
       {% if user.is_authenticated %}
+      <h6>Utilisateur: {{user}}</h6>
       <div class="list-group">
         {% for representation in representationList %}
         <a href="#" class="list-group-item list-group-item-action">
@@ -34,8 +35,9 @@
       </div>
       {% else %}
       <div class="list-group">
+        <h6>Veuillez vous connecter pour selectionner une date</h6>
         {% for representation in representationList %}
-        <div class="list-group-item list-group-item-action">
+        <div class="list-group-item list-group-item-action m-1">
           <h6>{{ representation.when }}</h6>
           <p>{{ representation.show_id.title }}</p>
           <p><strong>Lieu:</strong> {{ representation.location_id }}</p>
