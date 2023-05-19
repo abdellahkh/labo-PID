@@ -30,12 +30,14 @@ class Show(models.Model):
     bookable = models.BooleanField(blank=True, null=True)
     price = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+    representations = models.ManyToManyField('Representation', blank=True)
     
     def get_representations(self):
-        return Representation.objects.filter(show_id=self.pk)
+        return self.representations.all()
 
     def __str__(self):
         return self.slug
+
 
 class Type(models.Model):
     type = models.CharField(max_length=60)

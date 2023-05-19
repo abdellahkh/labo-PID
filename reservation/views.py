@@ -103,7 +103,9 @@ def createRepresentation(request):
         return redirect('home')
     return render(request, "show/createRepresentation.html", {'form': form})
 
-
+def representationReserver(request, show_id):
+    representationList = Representation.objects.filter(show_id=show_id)
+    return render(request, 'show/representationReserver.html', {'representationList': representationList})
 
 def search_shows(request):
     if request.method == "POST":
@@ -154,11 +156,12 @@ def allArtists(request):
 def displayShow(request, show_id):
     try:
         show = Show.objects.get(id=show_id)
+        representationList = Representation.objects.filter(show_id=show_id)
     except Show.DoesNotExist:
         raise Http404('Pas de show identifier')
 
     title = 'Fiche d\'un show'
-    return render(request, "show/show.html", {'show': show, 'title': title})
+    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList})
 
 
 def showArtist(request, artist_id):
