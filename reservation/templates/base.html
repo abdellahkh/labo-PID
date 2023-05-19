@@ -118,25 +118,32 @@
 
         {% endblock %}
       </div>
+
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
             <h4 class="text-center alert alert-info">Donnees</h4>
           </div>
-          <div>
+          <div class="sidebar-right">
             {% if user.is_authenticated %}
-            <p>connecter</p>
-            {% else %}
-            <p>Non connecter</p>
-            {% endif %}
+            <h3>Bienvenue, {{ user.first_name }} {{ user.last_name }}</h3>
+            <!-- Autres éléments de la sidebar de droite -->
+            <p>Username: {{ user.username }}</p>
+            <h6>Vos représentations réservées :</h6>
+            <ul>
+              {% for representation in representation_user %}
+              <li>
+                <div class="container">
+                  <p>{{ representation.show_id }}</p>
+                  <p>{{ representation.when }}</p>
+                </div>
+              </li>
+              {% endfor %}
+              {% endif %}
           </div>
-
-
-
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <footer class="bg-dark p-3">
