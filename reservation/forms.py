@@ -3,26 +3,6 @@ from django import forms
 from .models import Artist, RepresentationUser, Show, Representation
 from django.contrib.auth.models import User
 
-# class ShowRegistration(forms.ModelForm):
-#     representations = forms.ModelMultipleChoiceField(
-#         queryset=Representation.objects.all(),
-#         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
-#     )
-
-#     class Meta:
-#         model = Show 
-#         fields = ['slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image', 'representations']
-        
-#         widgets = {
-#             'slug': forms.TextInput(attrs={'class': 'form-control'}),
-#             'title': forms.TextInput(attrs={'class': 'form-control'}),
-#             'description': forms.Textarea(attrs={'class': 'form-control'}),
-#             'poster_url': forms.TextInput(attrs={'class': 'form-control'}),
-#             'location_id': forms.TextInput(attrs={'class': 'form-control'}),
-#             'bookable': forms.CheckboxInput(attrs={'class': 'form-control'}),
-#             'price': forms.NumberInput(attrs={'class': 'form-control'}),
-#             'image': forms.FileInput(attrs={'class': 'form-control'}),
-#         }
 
 class ShowRegistration(forms.ModelForm):
     representations = forms.ModelMultipleChoiceField(
@@ -106,10 +86,8 @@ class RepresentationForm(forms.ModelForm):
         }
 
 
-# class UserRepresentationForm(forms.ModelForm):
-#     class Meta:
-#         model = RepresentationUser
-#         fields = ['show_id', 'when', 'location_id']
-#         widgets = {
-#             'when': forms.DateTimeInput(attrs={'class': 'form-control datetimepicker'}),
-#         }
+class UserRepresentationForm(forms.ModelForm):
+    class Meta:
+        model = RepresentationUser
+        fields = ['representation_id', 'user_id', 'places']
+        

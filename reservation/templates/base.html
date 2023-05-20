@@ -39,6 +39,7 @@
   </div>
   <div class="container-fluid">
     <div class="row mt-5 mb-5">
+      {% if representations %}
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
@@ -111,14 +112,14 @@
           </nav>
         </div>
       </div>
-
+      {% endif %}
       <div class="col-md-8 main-content">
         <!-- Contenu principal de la page -->
         {% block content %}
 
         {% endblock %}
       </div>
-
+      {% if representation_user %}
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
@@ -126,23 +127,42 @@
           </div>
           <div class="sidebar-right">
             {% if user.is_authenticated %}
-            <h3>Bienvenue, {{ user.first_name }} {{ user.last_name }}</h3>
+            <h3>Bienvenue {{ user.first_name }} {{ user.last_name }}</h3>
             <!-- Autres éléments de la sidebar de droite -->
             <p>Username: {{ user.username }}</p>
-            <h6>Vos représentations réservées :</h6>
-            <ul>
+            <h6><strong>Votre historique</strong></h6>
+            <ul class="list-group">
               {% for representation in representation_user %}
-              <li>
-                <div class="container">
-                  <p>{{ representation.show_id }}</p>
-                  <p>{{ representation.when }}</p>
-                </div>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <strong>{{ representation.representation_id.show_id }}</strong>
+                <span class="badge badge-primary badge-pill">{{ representation.representation_id.when }}</span>
               </li>
               {% endfor %}
-              {% endif %}
+            </ul>
+            {% else %}
+            <div class="col-md-2 sidebar-left ml-5 mx-auto">
+              <div class="container">
+                <div class="p-3">
+
+                  <p>Vous etes hors-ligne</p>
+                  <p href="{% url 'login' %}">Connection</p>
+                </div>
+              </div>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
+      {% else %}
+      <div class="col-md-2 sidebar-left ml-5 mx-auto">
+        <div class="container">
+          <div class="p-3">
+            <p>Vous etes hors-ligne</p>
+            <p href="{% url 'login' %}">Connection</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 

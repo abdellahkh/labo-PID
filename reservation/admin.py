@@ -75,7 +75,10 @@ class RepresentationAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('show_id', 'when', 'location_id')
 
 
-admin.site.register(User)
-admin.site.register(RepresentationUser)
+@admin.register(RepresentationUser)
+class RepresentationUserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('representation_id', 'user_id', 'places')
+
+
 admin.site.register(Role)
 admin.site.register(RoleUser)

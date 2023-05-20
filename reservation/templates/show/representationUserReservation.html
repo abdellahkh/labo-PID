@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}NYGMA - Réserver une représentation{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <div class="col-lg-6 shadow p-8">
+                <h3 class="text-center">Réserver une représentation</h3>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_places">Nombre(s) de place(s)</label>
+                        <input type="text" class="form-control" id="id_places" name="places" placeholder="Entrez le nombre de places" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" class="btn btn-success" value="Réserver">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="p-4">
+  <h1>Veuillez d'abord vous connecter</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Se connecter</a>
+</div>
+{% endif %}
+
+{% endblock %}

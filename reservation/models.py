@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Locality(models.Model):
     postal_code = models.CharField(max_length=6)
@@ -77,22 +78,12 @@ class Representation(models.Model):
         return f"{self.show_id} - {self.when} - {self.location_id}"
 
 
-class User(models.Model):
-    login = models.CharField(max_length=30)
-    password = models.CharField(max_length=255)
-    firstname = models.CharField(max_length=60)
-    lastname = models.CharField(max_length=60)
-    email = models.EmailField(max_length=100)
-    langue = models.CharField(max_length=2)
-
-    def __str__(self):
-        return self.login
 
 
 class RepresentationUser(models.Model):
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
-    places = models.IntegerField()
+    places = models.IntegerField(blank=True, null=True)
 
 
 class Role(models.Model):
