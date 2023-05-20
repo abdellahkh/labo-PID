@@ -66,28 +66,30 @@
             </nav>
           </div>
           <div class="row p-3">
-            {% for representation in representations %}
+            {% if representations|length > 1 %}
+              {% for representation in representations %}
 
-            <div class="col-12 ml-1 p-1">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">{{ representation.show_id.title }}</h5>
-                  <p class="card-text">{{ representation.location_id.locality_id }}</p>
-                  <p class="card-text">{{ representation.location_id.designation }}</p>
-                  <p class="card-text">{{ representation.when }}</p>
-                  <div class="card-text">
-                    <div class="container">
-                      <div class="row">
-                        <a href="{% url 'show_detail' representation.show_id.id %}"
-                          class="col btn btn-primary">Consultez</a>
-                        <p class="col">{{ representation.show_id.price }} eur</p>
+              <div class="col-12 ml-1 p-1">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ representation.show_id.title }}</h5>
+                    <p class="card-text">{{ representation.location_id.locality_id }}</p>
+                    <p class="card-text">{{ representation.location_id.designation }}</p>
+                    <p class="card-text">{{ representation.when }}</p>
+                    <div class="card-text">
+                      <div class="container">
+                        <div class="row">
+                          <a href="{% url 'show_detail' representation.show_id.id %}"
+                            class="col btn btn-primary">Consultez</a>
+                          <p class="col">{{ representation.show_id.price }} eur</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {% endfor %}
+              {% endfor %}
+            {% endif %}
           </div>
 
         </div>
@@ -118,8 +120,7 @@
         {% block content %}
 
         {% endblock %}
-      </div>
-      {% if representation_user %}
+      </div>      
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
@@ -153,16 +154,6 @@
           </div>
         </div>
       </div>
-      {% else %}
-      <div class="col-md-2 sidebar-left ml-5 mx-auto">
-        <div class="container">
-          <div class="p-3">
-            <p>Vous etes hors-ligne</p>
-            <p href="{% url 'login' %}">Connection</p>
-          </div>
-        </div>
-      </div>
-      {% endif %}
     </div>
   </div>
 
