@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+       
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        {% if user.is_superuser %}
+        <div class="container p-1">
+            <a href="{{artist.id}}/edit">{{ artist.firstname }} {{ artist.lastname}}</a>
+        </div>
+        <a class="btn btn-danger m-1" href="{% url 'deleteArtist' artist_id=artist.id %}">Delete l'artiste</a>
+        <a class="btn btn-info m-1" href="{% url 'allArtists' %}">Retour a tous les artistes</a>
+        {% else %}
+        <div class="container p-1">
+            <a >{{ artist.firstname }} {{ artist.lastname}}</a>
+        </div>
+        <a class="btn btn-info m-1" href="{% url 'allArtists' %}">Retour a tous les artistes</a>
+        {% endif %}
+    </div>
+    <div class="card-footer text-muted">
+        Cliquer sur l'artiste pour plus d'options
+    </div>
+</div>
+
+{% endblock %}
+
+
+artist_edit

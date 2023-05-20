@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_superuser %}
+  <h1>{{ title }}</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-success m-1" type="submit" value="Enregistrer">
+    <a class="btn btn-danger m-1" href="{% url 'deleteArtist' artist_id=artist.id %}">Delete l'artiste</a>
+    <a class="btn btn-info m-1" href="{% url 'allArtists' %}">Retour a tous les artistes</a>
+  </form>
+{% else %}
+<div class="p-4">
+  <h1>Vous n'avez pas les droits pour accedez a la page</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+{% endblock %}
+
+

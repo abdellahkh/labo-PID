@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'reservations.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Site_resa.settings')  # Utilise la version de la branche distante
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

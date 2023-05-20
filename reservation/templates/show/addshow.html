@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}NYGMA - Add Show{% endblock %}
+
+{% block content %}
+{% if user.is_superuser %}
+<div class="container">
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <div class="col-lg-6 shadow p-8">
+                <h3 class="text-center">Ajouter un nouveau spectacle</h3>
+                <form action="" method=POST enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_slug">Slug</label>
+                        <input type="text" class="form-control" id="id_slug" name="slug" placeholder="Entrez le slug" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_title">Titre</label>
+                        <input type="text" class="form-control" id="id_title" name="title" placeholder="Entrez le titre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_description">Description</label>
+                        <textarea class="form-control" id="id_description" name="description" placeholder="Entrez la description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_poster_url">URL de l'affiche</label>
+                        <input type="text" class="form-control" id="id_poster_url" name="poster_url" placeholder="Entrez l'URL de l'affiche" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_image">Ajouter une image</label>
+                        <input type="file" class="form-control-file" id="id_image" name="image">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_location_id">Location</label>
+                        <select class="form-control" id="id_location_id" name="location_id" required>
+                            {% for loc in locs %}
+                            <option value="{{ loc.id }}">{{ loc.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="id_bookable" name="bookable">
+                            <label class="form-check-label" for="id_bookable">Réservable</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_price">Prix</label>
+                        <input type="number" class="form-control" id="id_price" name="price" placeholder="Entrez le prix" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" class="btn btn-success" value="Ajouter">
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="p-4">
+  <h1>Vous n'avez pas les droits pour accedez a la page</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+
+{% endblock %}
