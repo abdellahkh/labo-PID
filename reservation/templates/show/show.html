@@ -25,7 +25,7 @@
       <h6>Utilisateur: {{user}}</h6>
       <div class="list-group">
         {% for representation in representationList %}
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="{% url 'representationUserReservation' representation.id %}" class="list-group-item list-group-item-action">
           <h6>{{ representation.when }}</h6>
           <p>{{ representation.show_id.title }}</p>
           <p><strong>Lieu:</strong> {{ representation.location_id }}</p>

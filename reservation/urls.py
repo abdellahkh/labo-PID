@@ -29,6 +29,7 @@ urlpatterns = [
 
     path('representation/create', createRepresentation, name='createRepresentation'),
     path('representation/<int:show_id>/reserver', representationReserver , name='representationReserver'),
+    path('representation/<int:representation_id>/user_reservation', representationUserReservation , name='representationUserReservation'),
 
 
     #path('role/', views.role.index, name='role_index'),
