@@ -6,6 +6,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from os.path import join
+
+from reservation.models import Artist, Locality, Location, Representation, RepresentationUser, Show, Type
 from .forms import ArtistDeleteForm, RepresentationForm, ShowRegistration, ArtistFormCreation, UpdateUserForm, UserRepresentationForm
 from .models import *
 from datetime import datetime
