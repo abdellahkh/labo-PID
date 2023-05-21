@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Locality(models.Model):
-    postal_code = models.CharField(max_length=6)
+    postal_code = models.IntegerField(max_length=6)
     locality = models.CharField(max_length=60)
     
     def __str__(self):

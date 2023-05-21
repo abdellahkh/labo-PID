@@ -31,7 +31,7 @@ urlpatterns = [
     path('representation/<int:show_id>/reserver', representationReserver , name='representationReserver'),
     path('representation/<int:representation_id>/user_reservation', representationUserReservation , name='representationUserReservation'),
 
-
+    path('payment/', payment, name='payment'),
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),
     #path('location/', views.location.index, name='location_index'),
