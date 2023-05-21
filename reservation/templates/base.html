@@ -67,28 +67,28 @@
           </div>
           <div class="row p-3">
             {% if representations|length > 1 %}
-              {% for representation in representations %}
+            {% for representation in representations %}
 
-              <div class="col-12 ml-1 p-1">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ representation.show_id.title }}</h5>
-                    <p class="card-text">{{ representation.location_id.locality_id }}</p>
-                    <p class="card-text">{{ representation.location_id.designation }}</p>
-                    <p class="card-text">{{ representation.when }}</p>
-                    <div class="card-text">
-                      <div class="container">
-                        <div class="row">
-                          <a href="{% url 'show_detail' representation.show_id.id %}"
-                            class="col btn btn-primary">Consultez</a>
-                          <p class="col">{{ representation.show_id.price }} eur</p>
-                        </div>
+            <div class="col-12 ml-1 p-1">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ representation.show_id.title }}</h5>
+                  <p class="card-text">{{ representation.location_id.locality_id }}</p>
+                  <p class="card-text">{{ representation.location_id.designation }}</p>
+                  <p class="card-text">{{ representation.when }}</p>
+                  <div class="card-text">
+                    <div class="container">
+                      <div class="row">
+                        <a href="{% url 'show_detail' representation.show_id.id %}"
+                          class="col btn btn-primary">Consultez</a>
+                        <p class="col">{{ representation.show_id.price }} eur</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {% endfor %}
+            </div>
+            {% endfor %}
             {% endif %}
           </div>
 
@@ -120,7 +120,7 @@
         {% block content %}
 
         {% endblock %}
-      </div>      
+      </div>
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
@@ -141,13 +141,10 @@
               {% endfor %}
             </ul>
             {% else %}
-            <div class="col-md-2 sidebar-left ml-5 mx-auto">
+            <div class="sidebar-left">
               <div class="container">
-                <div class="p-3">
-
                   <p>Vous etes hors-ligne</p>
-                  <p href="{% url 'login' %}">Connection</p>
-                </div>
+                  <a href="{% url 'login' %}"><p>Connection</p></a>
               </div>
             </div>
             {% endif %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import Show, Location, Locality, Type, ArtistTypeShow, Representation, User, RepresentationUser, Role, RoleUser
+from .models import ArtisteType, Show, Location, Locality, Type, ArtistTypeShow, Representation, User, RepresentationUser, Role, RoleUser
 
 
 class RepresentationInline(admin.StackedInline):
@@ -82,3 +82,5 @@ class RepresentationUserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 admin.site.register(Role)
 admin.site.register(RoleUser)
+
+admin.site.register(ArtisteType)
