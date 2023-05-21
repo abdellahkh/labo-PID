@@ -143,7 +143,7 @@
             <ul class="list-group">
               {% for representation in representation_user %}
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>{{ representation.representation_id.show_id }}</strong>
+                <strong>{{ representation.representation_id.show_id.slug }}</strong>
                 <span class="badge badge-primary badge-pill">{{ representation.representation_id.when }}</span>
               </li>
               {% endfor %}
