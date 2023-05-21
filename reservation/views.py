@@ -75,7 +75,7 @@ def representationUserReservation(request, representation_id):
                 representation_user.user_id = request.user
                 representation_user.save()
                 messages.success(request, "Réservation réussie.")
-                return redirect('myaccount')
+                return redirect('payment') 
             else:
                 messages.error(request, "Impossible de réserver.")
                 print(form.errors)
@@ -87,7 +87,8 @@ def representationUserReservation(request, representation_id):
 
     return render(request, 'show/representationUserReservation.html', {'form': form, 'representation':representation})
 
-
+def payment(request): 
+    return render(request, 'main/payment.html', {})
 
 
 def addshow(request):
