@@ -37,7 +37,7 @@ class Show(models.Model):
         return self.representations.all()
 
     def __str__(self):
-        return self.slug
+        return self.title
 
 
 class Type(models.Model):
@@ -85,9 +85,15 @@ class RepresentationUser(models.Model):
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.representation_id} - {self.user_id} - {self.places}"
+
 
 class Role(models.Model):
     role = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.role
 
 
 class RoleUser(models.Model):
