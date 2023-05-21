@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container m-3">
   <div class="row">
-    <div class="col-9">
+    <div class="col-8">
       <div class="card">
         {% if show.image %}
         <img src="../{{ show.image }}" class="card-img-top" alt="...">
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-4">
       <h4>Dates Disponibles</h4>
       {% if user.is_authenticated %}
       <h6>Utilisateur: {{user}}</h6>
@@ -33,6 +33,7 @@
           <h6>{{ representation.when }}</h6>
           <p>{{ representation.show_id.title }}</p>
           <p><strong>Lieu:</strong> {{ representation.location_id }}</p>
+          <p><strong>Ville:</strong> {{ representation.location_id.locality_id }}</p>
           <p><strong>Prix:</strong> {{ representation.show_id.price }} EUR</p>
         </a>
         {% endfor %}
@@ -45,6 +46,7 @@
           <h6>{{ representation.when }}</h6>
           <p>{{ representation.show_id.title }}</p>
           <p><strong>Lieu:</strong> {{ representation.location_id }}</p>
+          <p><strong>Ville:</strong> {{ representation.location_id.locality_id }}</p>
           <p><strong>Prix:</strong> {{ representation.show_id.price }} EUR</p>
         </div>
         {% endfor %}

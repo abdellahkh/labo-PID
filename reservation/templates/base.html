@@ -20,6 +20,14 @@
 </head>
 
 <body>
+
+  <style>
+    .custom-card {
+      background-color: #e6f2ff;
+      /* Remplacez cette couleur par la teinte de bleu souhaitée */
+    }
+  </style>
+
   {% include 'navbar.html' %}
   <div class="container">
     {% if messages %}
@@ -70,7 +78,7 @@
             {% for representation in representations %}
 
             <div class="col-12 ml-1 p-1">
-              <div class="card">
+              <div class="card custom-card">
                 <div class="card-body">
                   <h5 class="card-title">{{ representation.show_id.title }}</h5>
                   <p class="card-text">{{ representation.location_id.locality_id }}</p>
@@ -128,7 +136,7 @@
           </div>
           <div class="sidebar-right">
             {% if user.is_authenticated %}
-            <h3>Bienvenue {{ user.first_name }} {{ user.last_name }}</h3>
+            <h3>Bienvenue {{ user.first_name }}</h3>
             <!-- Autres éléments de la sidebar de droite -->
             <p>Username: {{ user.username }}</p>
             <h6><strong>Votre historique</strong></h6>
@@ -143,8 +151,10 @@
             {% else %}
             <div class="sidebar-left">
               <div class="container">
-                  <p>Vous etes hors-ligne</p>
-                  <a href="{% url 'login' %}"><p>Connection</p></a>
+                <p>Vous etes hors-ligne</p>
+                <a href="{% url 'login' %}">
+                  <p>Connection</p>
+                </a>
               </div>
             </div>
             {% endif %}

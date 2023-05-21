@@ -200,7 +200,7 @@ def allArtists(request):
 def displayShow(request, show_id):
     try:
         show = Show.objects.get(id=show_id)
-        representationList = Representation.objects.filter(show_id=show_id)
+        representationList = Representation.objects.filter(show_id=show_id).order_by('when')
     except Show.DoesNotExist:
         raise Http404('Pas de show identifier')
 
