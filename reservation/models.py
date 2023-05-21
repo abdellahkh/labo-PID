@@ -53,7 +53,8 @@ class Artist(models.Model):
     types = models.ManyToManyField(Type, through='ArtisteType')
 
     def __str__(self):
-        return self.firstname + ' ' + self.lastname
+        return f'{self.firstname} {self.lastname}'
+
 
 
 class ArtisteType(models.Model):
@@ -62,6 +63,12 @@ class ArtisteType(models.Model):
 
     class Meta:
         db_table = "artist_type"
+        
+    def __str__(self):
+        artist_str = str(self.artist_id) if self.artist_id else ''
+        type_str = str(self.type_id) if self.type_id else ''
+        return artist_str + ' ' + type_str
+
 
 
 class ArtistTypeShow(models.Model):

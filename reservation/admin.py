@@ -67,7 +67,7 @@ class TypeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(ArtistTypeShow)
 class ArtistTypeShowAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    pass
+    list_display = ('artiste_type_id', 'show_id')
 
 
 @admin.register(Representation)
@@ -88,4 +88,6 @@ admin.site.register(Role)
 admin.site.register(RoleUser)
 
 
-admin.site.register(ArtisteType)
+@admin.register(ArtisteType)
+class ArtisteType(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display=('artist_id', 'type_id')

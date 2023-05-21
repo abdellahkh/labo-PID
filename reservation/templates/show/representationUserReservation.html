@@ -3,19 +3,75 @@
 {% block title %}NYGMA - Réserver une représentation{% endblock %}
 
 {% block content %}
+<style>
+.container {
+  max-width: 900px;
+}
+
+.shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.btn {
+  font-weight: bold;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.mb-5 {
+  margin-bottom: 3rem;
+}
+
+.p-4 {
+  padding: 1.5rem;
+}
+
+.p-3 {
+  padding: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+</style>
+
 {% if user.is_authenticated %}
-<div class="container">
-    <div class="row mt-5 mb-5">
+<div class="container mt-5">
+    <div class="row">
         <div class="col-lg-12 d-flex justify-content-center">
-            <div class="col-lg-6 shadow p-8">
+            <div class="col-lg-8 shadow p-4">
                 <h3 class="text-center">Réserver une représentation</h3>
+                <div class="mt-4">
+                    <p>Votre choix : <strong>{{ representation.show_id }}</strong> </p>
+                    <p>Lieu : <strong>{{ representation.location_id }}</strong> </p>
+                    <p>Ville : <strong>{{ representation.location_id.locality_id }}</strong> </p>
+                    <p>Date : <strong>{{ representation.when }}</strong> </p>
+                </div>
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="id_places">Nombre(s) de place(s)</label>
+                    <div class="form-group mt-4">
+                        <label for="id_places">Nombre(s) de place(s) désiré :</label>
                         <input type="text" class="form-control" id="id_places" name="places" placeholder="Entrez le nombre de places" required>
                     </div>
-                    <div class="form-group text-center">
+                    <div class="form-group text-center mt-4">
                         <input type="submit" class="btn btn-success" value="Réserver">
                     </div>
                 </form>
@@ -24,10 +80,10 @@
     </div>
 </div>
 {% else %}
-<div class="p-4">
-  <h1>Veuillez d'abord vous connecter</h1>
+<div class="container p-4">
+  <h1 class="text-center">Veuillez d'abord vous connecter</h1>
 </div>
-<div class="container p-3">
+<div class="container p-3 d-flex justify-content-center">
   <a class="btn btn-success" href="{% url 'login' %}">Se connecter</a>
 </div>
 {% endif %}

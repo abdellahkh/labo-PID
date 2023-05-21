@@ -63,10 +63,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
 
 
 def representationUserReservation(request, representation_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
-    
+      
     if request.user.is_authenticated:
         representation = get_object_or_404(Representation, id=representation_id)
 
@@ -88,15 +85,13 @@ def representationUserReservation(request, representation_id):
         messages.error(request, "Vous n'êtes pas connecté.")
         return redirect('login')
 
-    return render(request, 'show/representationUserReservation.html', {'form': form, 'representations':representation})
+    return render(request, 'show/representationUserReservation.html', {'form': form, 'representation':representation})
 
 
 
 
 def addshow(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
+    
     if request.user.is_superuser:
         if request.method == 'POST':
             fm = ShowRegistration(request.POST, request.FILES)
@@ -116,7 +111,7 @@ def addshow(request):
         return redirect('home')
     
     locations = Location.objects.all()
-    return render(request, 'show/addshow.html', {'form': fm, 'locs': locations, 'representations':representation, })
+    return render(request, 'show/addshow.html', {'form': fm, 'locs': locations })
 
 
 def allShows(request):
@@ -129,17 +124,12 @@ def allShows(request):
     page = request.GET.get('page')
     show = p.get_page(page)
 
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
+   
 
-    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show, 'representations': representation})
+    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
 
 
 def createRepresentation(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     if request.user.is_superuser:
         if request.method == 'POST':
             form = RepresentationForm(request.POST)
@@ -154,14 +144,12 @@ def createRepresentation(request):
     else:
         messages.error(request, "Vous n'avez pas les droits requis.")
         return redirect('home')
-    return render(request, "show/createRepresentation.html", {'form': form, 'representations':representation })
+    return render(request, "show/createRepresentation.html", {'form': form})
 
 def representationReserver(request, show_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
+    
     representationList = Representation.objects.filter(show_id=show_id)
-    return render(request, 'show/representationReserver.html', {'representationList': representationList, 'representations':representation})
+    return render(request, 'show/representationReserver.html', {'representationList': representationList})
 
 def search_shows(request):
     p = Paginator(Representation.objects.all(), 3)
@@ -171,16 +159,13 @@ def search_shows(request):
         searched = request.POST['searched']
         showsResults = Show.objects.filter(title__contains=searched)
         artistsResults = Artist.objects.filter(firstname__contains=searched) | Artist.objects.filter(lastname__contains=searched)
-        return render(request, "search_shows.html", {'searched': searched, 'showsResults': showsResults, 'representations': representation, 'artistsResults': artistsResults})
+        return render(request, "search_shows.html", {'searched': searched, 'showsResults': showsResults, 'artistsResults': artistsResults})
     else:
         return render(request, "search_shows.html", {})
 
 
 
 def editShow(request, show_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     if request.user.is_superuser:
         show = get_object_or_404(Show, id=show_id)
 
@@ -202,24 +187,17 @@ def editShow(request, show_id):
         'show': show,
         'form': form,
         'title': title,
-        'locs' : locations,
-        'representations':representation
+        'locs' : locations
 
     })
 
 
 def allArtists(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     artists = Artist.objects.all()
-    return render(request, "artist/allArtists.html", {'artists': artists, 'representations':representation})
+    return render(request, "artist/allArtists.html", {'artists': artists})
 
 
 def displayShow(request, show_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     try:
         show = Show.objects.get(id=show_id)
         representationList = Representation.objects.filter(show_id=show_id)
@@ -227,13 +205,10 @@ def displayShow(request, show_id):
         raise Http404('Pas de show identifier')
 
     title = 'Fiche d\'un show'
-    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList, 'representations':representation})
+    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList})
 
 
 def showArtist(request, artist_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     try:
         artist = Artist.objects.get(id=artist_id)
     except Artist.DoesNotExist:
@@ -241,13 +216,10 @@ def showArtist(request, artist_id):
 
     title = 'Fiche artiste'
 
-    return render(request, 'artist/showArtist.html', {'artist': artist, 'title': title, 'representations':representation})
+    return render(request, 'artist/showArtist.html', {'artist': artist, 'title': title})
 
 
 def artistCreate(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     if request.user.is_superuser:
         if request.method == 'POST':
             form = ArtistFormCreation(request.POST)
@@ -275,13 +247,10 @@ def artistCreate(request):
     else:
         messages.success(request, ("Vous n'avez pas les droits"))
         return redirect('home')
-    return render(request, 'artist/createArtist.html', {'form': form, 'title': title, 'representations':representation})
+    return render(request, 'artist/createArtist.html', {'form': form, 'title': title})
 
 
 def editArtist(request, artist_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     if request.user.is_superuser:
         artist = get_object_or_404(Artist, id=artist_id)
 
@@ -301,15 +270,11 @@ def editArtist(request, artist_id):
     return render(request, 'artist/editArtist.html', {
         'artist': artist,
         'form': form,
-        'title': title,
-        'representations':representation
+        'title': title
     })
 
 
 def deleteArtist(request, artist_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     if request.user.is_superuser:
         try:
             artist = Artist.objects.get(id=artist_id)
@@ -343,31 +308,23 @@ def deleteArtist(request, artist_id):
     return render(request, 'artist/deleteArtist.html', {
         'artist': artist,
         'form': form,
-        'title': title,
-        'representations':representation
+        'title': title
     })
 
 
 # Create your views here.
 def show_all_type(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     types = Type.objects.all()
 
     title = 'Liste des types'
 
     return render(request, 'type/showType.html', {
         'types': types,
-        'title': title,
-        'representations':representation
+        'title': title
     })
 
 
 def showType(request, type_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     try:
         type = Type.objects.get(id=type_id)
     except Type.DoesNotExist:
@@ -377,23 +334,16 @@ def showType(request, type_id):
 
     return render(request, 'type/showType.html', {
         'type': type,
-        'title': title,
-        'representations':representation
+        'title': title
     })
 
 
 def allLocality(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     localities = Locality.objects.all()
-    return render(request, "localities/localities.html", {'localities': localities, 'representations':representation})
+    return render(request, "localities/localities.html", {'localities': localities})
 
 
 def showLocality(request, locality_id):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     try:
         locality = Locality.objects.get(id=locality_id)
     except Artist.DoesNotExist:
@@ -401,15 +351,12 @@ def showLocality(request, locality_id):
 
     title = 'Fiche localite'
 
-    return render(request, 'localities/localities.html', {'locality': locality, 'title': title, 'representations':representation})
+    return render(request, 'localities/localities.html', {'locality': locality, 'title': title})
 
 
 
 
 def displayUserAccount(request):
-    p = Paginator(Representation.objects.all(), 3)
-    page = request.GET.get('page')
-    representation = p.get_page(page)
     from django.contrib.auth.models import User
     
     user = get_object_or_404(User, id=request.user.id)
@@ -430,6 +377,5 @@ def displayUserAccount(request):
     return render(request, 'registration/myaccount.html', {
         'show': user,
         'form': form,
-        'title': title,
-        'representations':representation
+        'title': title
     })
