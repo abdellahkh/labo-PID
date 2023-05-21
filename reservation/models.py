@@ -90,6 +90,7 @@ class User(models.Model):
 
 
 class RepresentationUser(models.Model):
+    from django.contrib.auth.models import User
     representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField()
