@@ -81,7 +81,7 @@ class Representation(models.Model):
 
 
 class RepresentationUser(models.Model):
-    representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.DO_NOTHING)
+    representation_id = models.ForeignKey(Representation, blank=True, null=True, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
     places = models.IntegerField(blank=True, null=True)
 

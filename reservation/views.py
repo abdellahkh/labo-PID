@@ -39,7 +39,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
     current_year = now.year
     current_month = now.month
 
-    p = Paginator(Representation.objects.all(), 3)
+    p = Paginator(Representation.objects.order_by('when'), 4)
     page = request.GET.get('page')
     representation = p.get_page(page)
 
