@@ -2,6 +2,15 @@
 
 {% block content %}
 
+<style>
+    .custom-img {
+        width: 100%;
+        height: 200px;
+        /* Ajustez la hauteur selon vos besoins */
+        object-fit: cover;
+    }
+</style>
+
 
 <div class="container">
     <div class="p-3">
@@ -31,13 +40,13 @@
         {% for showd in shows %}
         <div class="card m-3 col-sm" style="width: 18rem;">
             {% if showd.image %}
-                <img src="{{showd.image}}" class="card-img-top" alt="...">    
+            <img src="{{showd.image}}" class="card-img-top custom-img" alt="...">
             {% else %}
-                 <img src="{{showd.poster_url}}" class="card-img-top" alt="...">
+            <img src="{{showd.poster_url}}" class="card-img-top custom-img" alt="...">
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ showd.title }}</h5>
-                <p class="card-text">{{ showd.description }}</p>
+                <p class="card-text">{{ showd.description|truncatechars:200 }}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Lieu : {{ showd.location_id }}</li>
@@ -45,33 +54,30 @@
             </ul>
             <div class="card-body">
                 <a href="/show/{{showd.id}}" class="card-link btn btn-info">Consulter</a>
-                <a href="#" class="card-link btn btn-success">Reserver</a>
             </div>
         </div>
-
         {% endfor %}
     </div>
-
-</div>
-<div class="d-flex justify-content-center">
-    <nav aria-label="...">
-        <ul class="pagination">
-            {% if shows.has_previous %}
-            <li>
-                <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
-                    aria-disabled="true">Previous</a>
-            </li>
-            {% endif %}
-            <li class="page-link">
-                page {{shows.number}} of {{shows.paginator.num_pages}}
-            </li>
-            {% if shows.has_next %}
-            <li>
-                <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if shows.has_previous %}
+                <li>
+                    <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
+                        aria-disabled="true">Previous</a>
+                </li>
+                {% endif %}
+                <li class="page-link">
+                    page {{shows.number}} of {{shows.paginator.num_pages}}
+                </li>
+                {% if shows.has_next %}
+                <li>
+                    <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 </div>
 
 {% endblock %}
