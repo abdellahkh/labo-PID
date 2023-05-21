@@ -5,7 +5,11 @@
   <div class="row">
     <div class="col-9">
       <div class="card">
+        {% if show.image %}
+        <img src="../{{ show.image }}" class="card-img-top" alt="...">
+        {% else %}
         <img src="{{ show.poster_url }}" class="card-img-top" alt="...">
+        {% endif %}
         <div class="card-body">
           <h2 class="card-title">{{ show.title }}</h2>
           <p class="card-text">{{ show.description }}</p>

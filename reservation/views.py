@@ -170,9 +170,10 @@ def search_shows(request):
     if request.method == "POST":
         searched = request.POST['searched']
         showsResults = Show.objects.filter(title__contains=searched)
-        return render(request, "search_shows.html", {'searched': searched, 'showsResults' : showsResults, 'representations':representation})
-    else: 
-        return render(request, "search_shows.html",{})
+        artistsResults = Artist.objects.filter(firstname__contains=searched) | Artist.objects.filter(lastname__contains=searched)
+        return render(request, "search_shows.html", {'searched': searched, 'showsResults': showsResults, 'representations': representation, 'artistsResults': artistsResults})
+    else:
+        return render(request, "search_shows.html", {})
 
 
 
