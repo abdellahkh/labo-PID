@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">All Artists</h4>
+            {% if user.is_superuser %}
+                <a class="btn btn-danger" href="{% url 'artistCreate' %}">Ajouter artiste</a>
+            {% endif %}
+
+        </div class="container p-1" >
+        {% for artist in artists %}
+            <div class="container d-flex p-1" >
+                <a class="container p-2" href="/artist/{{artist.id}}">{{ artist.firstname }}  {{ artist.lastname}}</a>
+                {% if user.is_superuser %}
+                <a class="btn btn-danger" href="/artist/{{artist.id}}/edit">Edit</a>
+                {% endif %}
+            </div>            
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+

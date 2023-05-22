@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_superuser %}
+    <h1>{{ title }}</h1>
+    <p>Voulez-vous vraiment supprimer l'artiste "{{ artist.firstname }} {{ artist.lastname }}" ?</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_hidden }}
+        <input class="btn btn-danger" type="submit" value="Supprimer">
+        <a class="btn btn-success" href="{% url 'showArtist' artist.id %}">Annuler</a>
+    </form>
+{% else %}
+<div class="p-4">
+  <h1>Vous n'avez pas les droits pour accedez a la page</h1>
+</div>
+<div class="container p-3">
+  <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container m-3">
+  <div class="row">
+    <div class="col-8">
+      <div class="card">
+        {% if show.image %}
+        <img src="../{{ show.image }}" class="card-img-top" alt="...">
+        {% else %}
+        <img src="{{ show.poster_url }}" class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body">
+          <h2 class="card-title">{{ show.title }}</h2>
+          <p class="card-text">{{ show.description }}</p>
+          <p class="card-text"><strong>Prix:</strong> {{ show.price }} EUR</p>
+          {% if not user.is_authenticated %}
+          <a href="{% url 'login' %}" class="btn btn-info">Se connecter</a>
+          {% endif %}
+          {% if user.is_superuser %}
+          <a href="{{ show.id }}/edit" class="btn btn-danger">Modifier</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <h4>Dates Disponibles</h4>
+      {% if user.is_authenticated %}
+      <h6>Utilisateur: {{user}}</h6>
+      <div class="list-group">
+        {% for representation in representationList %}
+        <a href="{% url 'representationUserReservation' representation.id %}" class="list-group-item list-group-item-action">
+          <h6>{{ representation.when }}</h6>
+          <p>{{ representation.show_id.title }}</p>
+          <p><strong>Lieu:</strong> {{ representation.location_id }}</p>
+          <p><strong>Ville:</strong> {{ representation.location_id.locality_id }}</p>
+          <p><strong>Prix:</strong> {{ representation.show_id.price }} EUR</p>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="list-group">
+        <h6>Veuillez vous connecter pour selectionner une date</h6>
+        {% for representation in representationList %}
+        <div class="list-group-item list-group-item-action m-1">
+          <h6>{{ representation.when }}</h6>
+          <p>{{ representation.show_id.title }}</p>
+          <p><strong>Lieu:</strong> {{ representation.location_id }}</p>
+          <p><strong>Ville:</strong> {{ representation.location_id.locality_id }}</p>
+          <p><strong>Prix:</strong> {{ representation.show_id.price }} EUR</p>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

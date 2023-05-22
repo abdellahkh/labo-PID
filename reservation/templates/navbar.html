@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="/">Reservation - NYGMAM</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="/">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'allArtists' %}">Artistes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'allShows' %}">Spectacles</a>  
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 mr-3" method="POST" action="{% url 'search_shows' %}">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav align-items-center">
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <li class="nav-item dropdown ml-2">
+                            <a class="nav-link dropdown-toggle text-white btn btn-success" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'addshow' %}">Ajouter Spectacle</a>
+                                <a class="dropdown-item" href="{% url 'artistCreate' %}">Ajouter Artiste</a>
+                                <a class="dropdown-item" href="{% url 'createRepresentation' %}">Ajouter representation</a>       
+                                <a class="dropdown-item" href="/admin/">Admin Panel</a>
+                                <a class="dropdown-item" href="{% url 'type_show' %}">Type of show</a>
+                                <a class="dropdown-item" href="{% url 'locality_index' %}">Localities</a>
+                            </div>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item ml-2">
+                        <a class="nav-link btn btn-warning text-white" href="{% url 'myaccount' %}">My account</a>  
+                    </li>
+                    <li class="nav-item ml-2">
+                        <a class="nav-link btn btn-danger text-white" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li class="nav-item ml-2">
+                        <span class="badge badge-pill badge-info d-flex align-items-center">{{ request.user.username }}</span>                        
+                    </li>
+                {% else %}
+                    <li class="nav-item ml-2">
+                        <a class="nav-link btn btn-success text-white" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item active ml-2">
+                        <a class="nav-link btn btn-info text-white" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

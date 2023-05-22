@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if localities %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">All localities</h4>
+        </div class="container p-1">
+        {% for locality in localities %}
+
+        <div class="container p-1">
+            <a href="/locality/{{locality.id}}"  >{{ locality }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% if locality %}
+<div class="container p-5">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">Locality</h4>
+        </div class="container p-1">
+        <div class="container p-1">
+            <a href="#">{{ locality }}</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

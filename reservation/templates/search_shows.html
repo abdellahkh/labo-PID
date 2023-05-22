@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+  .card-img {
+    height: 200px; /* Ajustez cette valeur selon la taille souhaitée pour les images */
+    object-fit: cover;
+  }
+</style>
+
+<div class="container p-3">
+  <div class="card p-5">
+    {% if searched %}
+    <div class="container">
+      <h3>Résultats pour la recherche des spectacles contenant : {{ searched }}</h3>
+      <div class="container">
+        <div class="row justify-content-center">
+          {% for show in showsResults %}
+          <div class="col-md-4">
+            <div class="card m-2">
+              {% if show.image %}
+              <img src="../{{show.image}}" class="card-img card-img-top" alt="...">
+              {% else %}
+              <img src="{{show.poster_url}}" class="card-img card-img-top" alt="...">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{show.title}}</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="/show/{{show.id}}" class="btn btn-primary">Consulter</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h3>Résultats pour la recherche des artistes contenant : {{ searched }}</h3>
+      <div class="container">
+        <div class="row justify-content-md-center">
+          {% for artist in artistsResults %}
+          <div class="card m-2" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{artist.firstname}}</h5>
+              <h5 class="card-title">{{artist.lastname}}</h5>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <h3>Aucune recherche effectuée</h3>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

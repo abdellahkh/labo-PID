@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<section class="container">
+    <span class="color-primary">Saison 2022-2023, succès</span>
+	<h2 style="margin-bottom: 5px">{{ show.title }}</h2>
+    <p  style="margin-bottom: 20px">{{ representation.location_id }} </p>
+
+
+	<div class="row  hidden-xs ">
+		<div class="col-sm-6 pr-9">
+            <a href="#dates">
+            {% if show.image %}
+            <img  src="../{{ show.image }}" alt="-" class="pb-15" width="300" height="200">
+            {% else %}
+            <img src="{{ show.poster_url }}" alt="-" class="pb-15" width="300" height="200">
+            {% endif %}
+            </a>
+            <small><em></em></small>
+            
+		</div>
+		<div class="col-sm-9 pl-9">
+
+				<p style="overflow-wrap: break-word; margin-bottom: 10px; text-align: justify;"><span style="color: rgb(153, 204, 0);"><i>Après vous, mon cher<br></i></span></p><p style="overflow-wrap: break-word; margin-bottom: 10px; text-align: justify;">{{ show.description }}</p>            
+		</div>
+	</div>
+    <hr  id="dates">
+    	<h3>Les dates</h3>
+    
+
+<div class="table">
+    <table class="table table-striped table-condensed">
+        <tbody><tr>
+                    <th width="35%">
+                        Date
+                    </th>
+
+                    <th width="40%" class="hidden-xs">
+                        &nbsp;
+                    </th>
+                    <th width="20%">
+
+                    </th>
+                </tr>
+                <tr>
+                <td>
+                    {% for representation in representationList %}
+                   
+                    {{ representation.when }}
+                    <br>
+                    <br>
+                    {% endfor %}
+                    <div class="visible-xs" style="font-size: 8px"></div>
+                </td>
+                <td>
+                
+                </td>
+                <td class="hidden-xs">
+                    
+                </td>
+                <td class="xs-pull-left">
+                    {% for representation in representationList %}
+                    <a class="pull-right btn btn-sm btn-danger mb-0" href="{% url 'representationUserReservation' representation.id %}">reserver</a>
+                    <br>
+                    <br>
+                    {% endfor %}
+                </td>
+                <tr>
+
+                </tr>			
+
+             
+        </tbody>
+    </table>
+</div>	
+{% endblock %}
