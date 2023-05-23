@@ -132,13 +132,20 @@
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
-            <h4 class="text-center alert alert-info">Donnees</h4>
           </div>
           <div class="sidebar-right">
             {% if user.is_authenticated %}
-            <h3>Bienvenue {{ user.first_name }}</h3>
+            <h3 class="bienvenu" >Bienvenue {{ user.first_name }}</h3>
+            <style>              
+              .bienvenu {
+                  color: rgb(204, 153, 255);
+                  font-style: italic;}
+              .Username {
+                color: rgb(153, 153, 255);
+                font-style: italic;}
+      </style>
             <!-- Autres éléments de la sidebar de droite -->
-            <p>Username: {{ user.username }}</p>
+            <p class="Username">Username: {{ user.username }}</p>
             <h6><strong>Votre historique</strong></h6>
             <ul class="list-group">
               {% for representation in representation_user %}

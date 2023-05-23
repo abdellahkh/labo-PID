@@ -5,7 +5,7 @@
 <br>
 <section class="container">
     <span class="color-primary">Saison 2022-2023, succès</span>
-	<h2 style="margin-bottom: 5px">{{ show.title }}</h2>
+	<h2 class="titre" style="margin-bottom: 5px">{{ show.title }}</h2>
     <p  style="margin-bottom: 20px">{{ representation.location_id }} </p>
 
 
@@ -27,7 +27,7 @@
 		</div>
 	</div>
     <hr  id="dates">
-    	<h3>Les dates</h3>
+    	<h3 class="dates">Les dates</h3>
     
 
 <div class="table">
@@ -36,6 +36,9 @@
                     <th width="35%">
                         Date
                     </th>
+                    <th width="40%">
+						Lieu
+					</th>
 
                     <th width="40%" class="hidden-xs">
                         &nbsp;
@@ -45,7 +48,7 @@
                     </th>
                 </tr>
                 <tr>
-                <td>
+                <td class="custom-color">
                     {% for representation in representationList %}
                    
                     {{ representation.when }}
@@ -54,8 +57,27 @@
                     {% endfor %}
                     <div class="visible-xs" style="font-size: 8px"></div>
                 </td>
-                <td>
-                
+                <style>
+                    .custom-color {
+                        color: blue;
+                    }
+                    .custum-color {
+                        color: rgb(102, 204, 0);
+                    }
+                    .dates {
+                        color: rgb(255, 204, 255);}
+                    .titre {
+                        color: rgb(255, 51, 51);}
+                </style>
+                <td class="custum-color">
+                    {% for representation in representationList %}
+                   
+                    {{ representation.location_id }}                    
+                    <br>
+                    <br>
+                    {% endfor %}
+                    
+                    <div class="visible-xs" style="font-size: 8px"></div>
                 </td>
                 <td class="hidden-xs">
                     
@@ -74,5 +96,8 @@
              
         </tbody>
     </table>
+</div>
+<div class="text-left">
+    <a href="{% url 'allShows' %}" class="btn btn-primary btn-warning">Retour</a>
 </div>	
 {% endblock %}
