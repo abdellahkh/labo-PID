@@ -118,10 +118,10 @@ def addshow(request):
 def allShows(request):
    
     # shows = Show.objects.all().order_by('?')
-    shows_list = Show.objects.all()
+    shows_list = Show.objects.all().order_by('slug').values()
 
     # Set up Pagination
-    p = Paginator(Show.objects.all(), 3)
+    p = Paginator(Show.objects.all().order_by('slug'), 3)
     page = request.GET.get('page')
     show = p.get_page(page)
 
@@ -161,7 +161,7 @@ def representationReserver(request, show_id):
     return render(request, 'show/representationReserver.html', {'representationList': representationList})
 
 def search_shows(request):
-    p = Paginator(Representation.objects.all(), 3)
+    p = Paginator(Representation.objects.all().order_by('when').values(), 3)
     page = request.GET.get('page')
     representation = p.get_page(page)
     if request.method == "POST":
@@ -202,7 +202,7 @@ def editShow(request, show_id):
 
 
 def allArtists(request):
-    artists = Artist.objects.all()
+    artists = Artist.objects.all().order_by('firstname').values()
     return render(request, "artist/allArtists.html", {'artists': artists})
 
 
