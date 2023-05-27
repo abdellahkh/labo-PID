@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkout canceled</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #FFEDD9; /* A light pastel orange background */
+      color: #FF7A00; /* A darker orange for text */
+      text-align: center;
+      padding-top: 15%;
+    }
+
+    section {
+      background-color: #FFD6B5; /* A slightly darker pastel orange for the section */
+      padding: 2em;
+      border-radius: 15px;
+      width: 70%;
+      margin: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+
+    p {
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <p>Vous avez oublié d'ajouter quelque chose à votre panier ? Continuez vos achats, puis revenez pour payer !</p>
+    <p id="timer">Vous allez être redirigé dans 5 secondes...</p>
+  </section>
+  <script type="text/javascript">
+    var timeLeft = 5;
+    var timerElement = document.getElementById('timer');
+    
+    var intervalId = setInterval(function(){
+        timeLeft--;
+        if(timeLeft <= 0){
+            clearInterval(intervalId);
+            window.location.href = "{% url 'home' %}";
+        } else {
+            timerElement.textContent = "Vous allez être redirigé dans " + timeLeft + " secondes...";
+        }
+    }, 1000); // 1000 milliseconds = 1 second
+  </script>
+</body>
+</html>
