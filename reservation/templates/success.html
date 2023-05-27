@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thanks for your order!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e5f9e0; /* A light pastel green background */
+      color: #026400; /* A darker green for text */
+      text-align: center;
+      padding-top: 15%;
+    }
+
+    section {
+      background-color: #a1d6a7; /* A slightly darker pastel green for the section */
+      padding: 2em;
+      border-radius: 15px;
+      width: 70%;
+      margin: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+
+    p {
+      font-size: 1.5em;
+    }
+
+    a {
+      color: #026400; /* Keeping the link the same color as the text for consistency */
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #014200;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <p>
+        Nous vous remercions de votre confiance ! Si vous avez des questions, vous pouvez nous contacter à l'adresse suivante:
+      <a href="mailto:orders@example.com">orders@example.com</a>.
+    </p>
+    <p id="timer">Vous allez être redirigé dans 5 secondes...</p>
+  </section>
+  <script type="text/javascript">
+    var timeLeft = 5;
+    var timerElement = document.getElementById('timer');
+    
+    var intervalId = setInterval(function(){
+        timeLeft--;
+        if(timeLeft <= 0){
+            clearInterval(intervalId);
+            window.location.href = "{% url 'home' %}";
+        } else {
+            timerElement.textContent = "Vous allez être redirigé dans " + timeLeft + " secondes...";
+        }
+    }, 1000); // 1000 milliseconds = 1 second
+  </script>
+</body>
+</html>

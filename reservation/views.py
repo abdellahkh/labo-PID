@@ -6,6 +6,15 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from os.path import join
+import stripe
+from django.http import JsonResponse
+from django.conf import settings
+from django.views import View
+from django.http import HttpResponse
+from django.views.generic import TemplateView
+
+
+from django.shortcuts import redirect
 
 from reservation.models import Artist, Locality, Location, Representation, RepresentationUser, Show, Type
 from .forms import ArtistDeleteForm, RepresentationForm, ShowRegistration, ArtistFormCreation, UpdateUserForm, UserRepresentationForm
@@ -19,6 +28,8 @@ from django.core.paginator import Paginator
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 # def home(request):
@@ -73,9 +84,23 @@ def representationUserReservation(request, representation_id):
                 representation_user = form.save(commit=False)
                 representation_user.representation_id = representation
                 representation_user.user_id = request.user
+                
+                places = form.cleaned_data.get('places')
+                representation_user.places = places
+                
+                # Récuperation produit
+                representation = Representation.objects.get(id=representation_id)
+                show = Show.objects.get(title=representation.show_id)
+                
                 representation_user.save()
+                
+                # Ajoute le nombre de places à la session pour l'utiliser dans la vue de paiement
+                request.session['places'] = places
+                request.session['show_id'] = show.id
+                request.session['representation_id'] = representation_id
+                
                 messages.success(request, "Réservation réussie.")
-                return redirect('payment') 
+                return redirect('landing-page') 
             else:
                 messages.error(request, "Impossible de réserver.")
                 print(form.errors)
@@ -88,7 +113,12 @@ def representationUserReservation(request, representation_id):
     return render(request, 'show/representationUserReservation.html', {'form': form, 'representation':representation})
 
 def payment(request): 
-    return render(request, 'main/payment.html', {})
+    # Récupère le nombre de places depuis la session
+    places = request.session.get('places', 0)
+
+    # Passe le nombre de places au template
+    return render(request, 'main/payment.html', {'places': places})
+
 
 
 def addshow(request):
@@ -380,3 +410,73 @@ def displayUserAccount(request):
         'form': form,
         'title': title
     })
+    
+    
+class ProductLandingPageView(TemplateView):
+    template_name = "show/landing.html"
+
+    def get_context_data(self, **kwargs):
+        show_id = self.request.session.get('show_id', 0)
+        representation_id = self.request.session.get('representation_id', 0)
+        product = Show.objects.get(id=show_id)
+        representation = Representation.objects.get(id=representation_id)
+        location = representation.location_id
+        
+        places = self.request.session.get('places', 0)
+        total = places * product.price
+        context = super(ProductLandingPageView, self).get_context_data(**kwargs)
+        context.update({
+            "product": product,
+            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+            "places": places,
+            "total": total,
+            "location": location.designation +" "+location.address,
+            "date": representation.when
+        })
+        return context
+    
+
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args, **kwargs):
+        product_id = self.request.session.get('show_id', 0)
+        product = Show.objects.get(id=product_id)
+        quantity = self.request.session.get('places', 0)
+        YOUR_DOMAIN = "http://127.0.0.1:8000"
+        print("AVANT L ERREUR")
+        checkout_session = ""
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                    {
+                        'price_data': {
+                            'currency': 'eur',
+                            'unit_amount': int(product.price * 100),
+                            'product_data': {
+                                'name': product.title,
+                                # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                            },
+                        },
+                        'quantity': quantity,
+                    },
+                ],
+                metadata={
+                    "product_id": product.id
+                },
+                mode='payment',
+                success_url=YOUR_DOMAIN + '/success/',
+                cancel_url=YOUR_DOMAIN + '/cancel/',
+            )
+        except:
+            print("DEBUG CHECKOUT SESSION ID: "+checkout_session.id)
+            
+        return JsonResponse({
+            'id': checkout_session.id
+        })
+
+class SuccessView(TemplateView):
+    template_name = "success.html"
+
+
+class CancelView(TemplateView):
+    template_name = "cancel.html"
