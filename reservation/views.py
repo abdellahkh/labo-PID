@@ -12,6 +12,7 @@ from django.conf import settings
 from django.views import View
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from django.db.models import Q
 
 
 from django.shortcuts import redirect
@@ -182,17 +183,39 @@ def representationReserver(request, show_id):
     representationList = Representation.objects.filter(show_id=show_id)
     return render(request, 'show/representationReserver.html', {'representationList': representationList})
 
+
+
+
 def search_shows(request):
-    p = Paginator(Representation.objects.all(), 3)
+    p = Paginator(Show.objects.all(), 3)
     page = request.GET.get('page')
-    representation = p.get_page(page)
+    shows = p.get_page(page)
+
     if request.method == "POST":
         searched = request.POST['searched']
-        showsResults = Show.objects.filter(title__contains=searched)
-        artistsResults = Artist.objects.filter(firstname__contains=searched) | Artist.objects.filter(lastname__contains=searched)
-        return render(request, "search_shows.html", {'searched': searched, 'showsResults': showsResults, 'artistsResults': artistsResults})
+        words = searched.split()
+
+        query = Q()
+        for word in words:
+            query |= Q(firstname__icontains=word)
+            query |= Q(lastname__icontains=word)
+
+        showsResults = Show.objects.filter(title__icontains=searched)
+        artistsResults = Artist.objects.filter(query)
+
+        context = {
+            'searched': searched,
+            'showsResults': showsResults,
+            'artistsResults': artistsResults,
+            'shows': shows,
+        }
+
+        return render(request, "search_shows.html", context)
+
     else:
-        return render(request, "search_shows.html", {})
+        return render(request, "search_shows.html", {'shows': shows})
+
+
 
 
 
