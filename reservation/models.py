@@ -22,6 +22,7 @@ class Location(models.Model):
 
 
 class Show(models.Model):
+    id = models.AutoField(primary_key=True)
     slug = models.CharField(max_length=60, blank=True, null=True)
     title = models.CharField('Show Title', max_length=255, blank=True, null=True)
     description = models.TextField('Show Description', blank=True, null=True)
@@ -38,6 +39,9 @@ class Show(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_display_price(self):
+        return "{0:.2f}".format(self.price)
 
 
 class Type(models.Model):
