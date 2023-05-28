@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow">
     <div class="container-fluid">
         <a class="navbar-brand text-white" href="/">Reservation - NYGMAM</a>
+       
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -20,6 +21,11 @@
             <form class="form-inline my-2 my-lg-0 mr-3" method="POST" action="{% url 'search_shows' %}">
                 {% csrf_token %}
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                <select name="filter_by" class="form-control mr-sm-2">
+                    <option value="all">All</option>
+                    <option value="show">Show</option>
+                    <option value="artist">Artist</option>
+                </select>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
             <ul class="navbar-nav align-items-center">

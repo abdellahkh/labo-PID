@@ -33,6 +33,10 @@ urlpatterns = [
     path('representation/<int:representation_id>/user_reservation', representationUserReservation , name='representationUserReservation'),
 
     path('payment/', payment, name='payment'),
+    path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session' ),
+    path('panier/', ProductLandingPageView.as_view(), name= 'landing-page'),
+    path('cancel/', CancelView.as_view(), name='cancel'),
+    path('success/', SuccessView.as_view(), name='success'),
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),
     #path('location/', views.location.index, name='location_index'),
