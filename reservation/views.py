@@ -186,6 +186,8 @@ def representationReserver(request, show_id):
 
 
 
+
+
 def search_shows(request):
     p = Paginator(Show.objects.all(), 3)
     page = request.GET.get('page')
@@ -193,15 +195,15 @@ def search_shows(request):
 
     if request.method == "POST":
         searched = request.POST['searched']
-        words = searched.split()
+        filter_by = request.POST.get('filter_by', 'all')  # Get filter type from form
 
+        showsResults = Show.objects.filter(title__icontains=searched) if filter_by in ['show', 'all'] else Show.objects.none()
+        words = searched.split()
         query = Q()
         for word in words:
             query |= Q(firstname__icontains=word)
             query |= Q(lastname__icontains=word)
-
-        showsResults = Show.objects.filter(title__icontains=searched)
-        artistsResults = Artist.objects.filter(query)
+        artistsResults = Artist.objects.filter(query) if filter_by in ['artist', 'all'] else Artist.objects.none()
 
         context = {
             'searched': searched,
@@ -214,6 +216,12 @@ def search_shows(request):
 
     else:
         return render(request, "search_shows.html", {'shows': shows})
+
+
+
+
+
+
 
 
 
