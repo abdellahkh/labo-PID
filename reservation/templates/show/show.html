@@ -98,8 +98,11 @@
     </table>
 </div>
 <div class="text-left">
-    <a href="{% url 'updateShow' show.id %}" class="btn btn-primary">Edit</a>
-    <a href="{% url 'deleteShow' show.id %}" class="btn btn-danger">Supprimer</a>
+    {% if user.is_superuser %}
+        <a href="{% url 'updateShow' show.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'deleteShow' show.id %}" class="btn btn-danger">Supprimer</a>
+    {% endif %}
+    
     <a href="{% url 'allShows' %}" class="btn btn-primary btn-warning">Retour</a>
 </div>	
 {% endblock %}
