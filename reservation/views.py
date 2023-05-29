@@ -147,18 +147,33 @@ def addshow(request):
 
 
 def allShows(request):
-   
-    # shows = Show.objects.all().order_by('?')
-    shows_list = Show.objects.all()
+
+    type_id = request.GET.get('type')  # récupérer le type à partir de la requête GET
+    types = Type.objects.all()  # obtenir tous les types disponibles
+
+    if type_id:
+        # Si un type a été choisi, trouver tous les artistes associés à ce type
+        artiste_types = ArtisteType.objects.filter(type_id=type_id)
+
+        # Pour chaque artiste_type, trouver les spectacles correspondants
+        shows_list = Show.objects.none()
+        for artiste_type in artiste_types:
+            shows_with_this_type = Show.objects.filter(artisttypeshow__artiste_type_id=artiste_type.id)
+            shows_list = shows_list.union(shows_with_this_type)
+            
+    else:
+        # Sinon, obtenir tous les spectacles
+        shows_list = Show.objects.all()
 
     # Set up Pagination
-    p = Paginator(Show.objects.all(), 3)
+    p = Paginator(shows_list, 3)
     page = request.GET.get('page')
     show = p.get_page(page)
 
-   
+    return render(request, "show/allShows.html", {'show_list': shows_list, 'types': types, "shows": show, 'type': type_id})
 
-    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
+
+
 
 
 def createRepresentation(request):
@@ -219,6 +234,20 @@ def search_shows(request):
 
 
 
+def get_shows_by_type(request, type_name):
+    # Get the Type object for the given type name
+    type_obj = Type.objects.get(name=type_name)
+
+    # Get all ArtisteType objects that are associated with this type
+    artiste_types = ArtisteType.objects.filter(type=type_obj)
+
+    # Get all artiste ids from the artiste_types
+    artiste_ids = artiste_types.values_list('artiste', flat=True)
+
+    # Get all shows that are associated with these artistes
+    shows = Show.objects.filter(artiste_type__artiste__id__in=artiste_ids)
+
+    return render(request, 'main/shows_by_type.html', {'shows': shows})
 
 
 
