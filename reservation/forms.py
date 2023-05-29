@@ -13,9 +13,10 @@ class ShowRegistration(forms.ModelForm):
 
     class Meta:
         model = Show
-        fields = ['slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image', 'representations']
+        fields = ['id', 'slug', 'title', 'description', 'poster_url', 'location_id', 'bookable', 'price', 'image', 'representations']
 
         widgets = {
+            'id': forms.NumberInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-control'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),

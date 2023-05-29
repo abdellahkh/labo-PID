@@ -62,10 +62,10 @@
                         color: blue;
                     }
                     .custum-color {
-                        color: rgb(102, 204, 0);
+                        color: rgb(255, 20, 147);
                     }
                     .dates {
-                        color: rgb(255, 204, 255);}
+                        color: rgb(165, 42, 42);}
                     .titre {
                         color: rgb(255, 51, 51);}
                 </style>
@@ -98,6 +98,8 @@
     </table>
 </div>
 <div class="text-left">
+    <a href="{% url 'updateShow' show.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'deleteShow' show.id %}" class="btn btn-danger">Supprimer</a>
     <a href="{% url 'allShows' %}" class="btn btn-primary btn-warning">Retour</a>
 </div>	
 {% endblock %}

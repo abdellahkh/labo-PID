@@ -15,6 +15,7 @@
                 <a class="container p-2" href="/artist/{{artist.id}}">{{ artist.firstname }}  {{ artist.lastname}}</a>
                 {% if user.is_superuser %}
                 <a class="btn btn-danger" href="/artist/{{artist.id}}/edit">Edit</a>
+                <a class="btn btn-primary btn-warning" href="{% url 'deleteArtist' artist_id=artist.id %}">Delete</a>
                 {% endif %}
             </div>            
         {% endfor %}

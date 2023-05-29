@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Supprimer le spectacle</h1>
+  <p>Voulez-vous vraiment supprimer le spectacle "{{ show.title }}" ?</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-danger" value="Supprimer">
+    <a href="{% url 'allShows' %}" class="btn btn-primary">Annuler</a>
+  </form>
+{% endblock %}

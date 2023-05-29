@@ -5,8 +5,9 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-from os.path import join
 import stripe
+
+from os.path import join
 from django.http import JsonResponse
 from django.conf import settings
 from django.views import View
@@ -14,6 +15,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
 
+from django.views.generic.edit import UpdateView
 from reservation.models import Artist, Locality, Location, Representation, RepresentationUser, Show, Type
 from .forms import ArtistDeleteForm, RepresentationForm, ShowRegistration, ArtistFormCreation, UpdateUserForm, UserRepresentationForm
 from .models import *
@@ -68,7 +70,16 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
         'current_month': current_month
         })
 
+class ReservationUpdateView(UpdateView):
+    model = RepresentationUser
+    form_class = UserRepresentationForm
+    template_name = 'show/update_reservation.html'
+    success_url = '/myaccount/'  # L'URL de redirection après la modification
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Modifier la réservation'
+        return context
 
 def representationUserReservation(request, representation_id):
       
@@ -139,27 +150,73 @@ def addshow(request):
 
 
 def allShows(request):
-   
-    # shows = Show.objects.all().order_by('?')
-    shows_list = Show.objects.all().order_by('slug').values()
+
+    type_id = request.GET.get('type')  # récupérer le type à partir de la requête GET
+    types = Type.objects.all()  # obtenir tous les types disponibles
+    representation_user = RepresentationUser.objects.filter(user_id=request.user)
+
+    if type_id:
+        # Si un type a été choisi, trouver tous les artistes associés à ce type
+        artiste_types = ArtisteType.objects.filter(type_id=type_id)
+
+        # Pour chaque artiste_type, trouver les spectacles correspondants
+        shows_list = Show.objects.none()
+        for artiste_type in artiste_types:
+            shows_with_this_type = Show.objects.filter(artisttypeshow__artiste_type_id=artiste_type.id)
+            shows_list = shows_list.union(shows_with_this_type)
+            
+    else:
+        # Sinon, obtenir tous les spectacles
+        shows_list = Show.objects.all()
 
     # Set up Pagination
-    p = Paginator(Show.objects.all().order_by('slug'), 3)
+    p = Paginator(shows_list, 3)
     page = request.GET.get('page')
     show = p.get_page(page)
 
-   
+    return render(request, "show/allShows.html", {
+        'show_list': shows_list,
+        'types': types,
+        'shows': show,
+        'type': type_id,
+        'representation_user': representation_user,  # Ajout de la variable representation_user
+        })
 
-    return render(request, "show/allShows.html", {'show_list': shows_list, "shows": show})
+def updateShow(request, show_id):
+    if request.user.is_superuser:
+        show = get_object_or_404(Show, id=show_id)
 
-def showr(request, show_id):
-    try:
-        show = Show.objects.get(id=show_id)
-    except Show.DoesNotExist:
-        raise Http404('Pas de show identifier')
+        if request.method == 'POST':
+            form = ShowRegistration(request.POST, request.FILES, instance=show)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Le spectacle a été mis à jour.")
+                return redirect('home')
+            else:
+                messages.error(request, "Impossible de mettre à jour le spectacle.")
+                print(form.errors)
+        else:
+            form = ShowRegistration(instance=show)
+    else:
+        messages.error(request, "Vous n'avez pas les droits requis.")
+        return redirect('home')
 
-    title = 'Fiche d\'un show'
-    return render(request, "show/showr.html", {'show': show, 'title': title})
+    locations = Location.objects.all()
+    return render(request, 'show/updateShow.html', {'form': form, 'locs': locations})
+
+def deleteShow(request, show_id):
+    if request.user.is_superuser:
+        show = get_object_or_404(Show, id=show_id)
+
+        if request.method == 'POST':
+            show.delete()
+            messages.success(request, "Le spectacle a été supprimé avec succès.")
+            return redirect('allShows')
+
+        return render(request, 'show/deleteShow.html', {'show': show})
+
+    messages.error(request, "Vous n'avez pas les droits requis.")
+    return redirect('home')
 
 def createRepresentation(request):
     if request.user.is_superuser:
@@ -187,6 +244,7 @@ def search_shows(request):
     p = Paginator(Show.objects.all(), 3)
     page = request.GET.get('page')
     shows = p.get_page(page)
+    representation_user = RepresentationUser.objects.filter(user_id=request.user)
 
     if request.method == "POST":
         searched = request.POST['searched']
@@ -205,6 +263,7 @@ def search_shows(request):
             'showsResults': showsResults,
             'artistsResults': artistsResults,
             'shows': shows,
+            'representation_user': representation_user,
         }
 
         return render(request, "search_shows.html", context)
@@ -212,48 +271,40 @@ def search_shows(request):
     else:
         return render(request, "search_shows.html", {'shows': shows})
 
+def get_shows_by_type(request, type_name):
+    # Get the Type object for the given type name
+    type_obj = Type.objects.get(name=type_name)
 
-def editShow(request, show_id):
-    if request.user.is_superuser:
-        show = get_object_or_404(Show, id=show_id)
+    # Get all ArtisteType objects that are associated with this type
+    artiste_types = ArtisteType.objects.filter(type=type_obj)
 
-        if request.method == 'POST':
-            form = ShowRegistration(request.POST, instance=show)
-            if form.is_valid():
-                form.save()
-                messages.success(request, ("Artiste a bien ete modifier"))
-                return redirect('show_detail', show_id=show.id)
-        else:
-            form = ShowRegistration(instance=show)
+    # Get all artiste ids from the artiste_types
+    artiste_ids = artiste_types.values_list('artiste', flat=True)
 
-        title = 'Modifier un show'
-    else:
-        messages.success(request, ("Vous n'avez pas les droits"))
-        return redirect('home')
-    locations = Location.objects.all()
-    return render(request, 'show/updateShow.html', {
-        'show': show,
-        'form': form,
-        'title': title,
-        'locs' : locations
+    # Get all shows that are associated with these artistes
+    shows = Show.objects.filter(artiste_type__artiste__id__in=artiste_ids)
 
-    })
+    return render(request, 'main/shows_by_type.html', {'shows': shows})
 
 
 def allArtists(request):
     artists = Artist.objects.all().order_by('firstname').values()
-    return render(request, "artist/allArtists.html", {'artists': artists})
+    representation_user = RepresentationUser.objects.filter(user_id=request.user)
+
+    return render(request, "artist/allArtists.html", {'artists': artists, 'representation_user': representation_user,})
 
 
 def displayShow(request, show_id):
     try:
         show = Show.objects.get(id=show_id)
         representationList = Representation.objects.filter(show_id=show_id).order_by('when')
+        representation_user = RepresentationUser.objects.filter(user_id=request.user)
+
     except Show.DoesNotExist:
         raise Http404('Pas de show identifier')
 
     title = 'Fiche d\'un show'
-    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList})
+    return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList, 'representation_user': representation_user,})
 
 
 def showArtist(request, artist_id):
@@ -409,6 +460,8 @@ def displayUserAccount(request):
     
     user = get_object_or_404(User, id=request.user.id)
 
+    representation_user = RepresentationUser.objects.filter(user_id=request.user)
+
     if request.method == 'POST':
         form = UpdateUserForm(request.POST, instance=user)
         if form.is_valid():
@@ -425,7 +478,8 @@ def displayUserAccount(request):
     return render(request, 'registration/myaccount.html', {
         'show': user,
         'form': form,
-        'title': title
+        'title': title,
+        'representation_user': representation_user,  # Ajout de la variable representation_user
     })
 
 class ProductLandingPageView(TemplateView):

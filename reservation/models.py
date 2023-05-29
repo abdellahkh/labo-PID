@@ -97,6 +97,9 @@ class RepresentationUser(models.Model):
 
     def __str__(self):
         return f"{self.representation_id} - {self.user_id} - {self.places}"
+    
+    def get_total_price(self):
+        return self.places * self.representation_id.show_id.price
 
 
 class Role(models.Model):

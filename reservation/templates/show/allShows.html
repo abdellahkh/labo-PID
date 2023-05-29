@@ -5,15 +5,25 @@
 <style>
     .custom-img {
         width: 100%;
-        height: 200px;
+        height: 300px;
         /* Ajustez la hauteur selon vos besoins */
-        object-fit: cover;
+        object-fit: contain;
     }
 </style>
 
 
 <div class="container">
     <div class="p-3">
+        <form method="GET" action="">
+            <select name="type">
+                <option value="">--Select Type--</option>
+                {% for type in types %}
+                <option value="{{ type.id }}">{{ type.type }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Filter">
+        </form>
+
         <h4 class="text-center alert alert-info">All Shows</h4>
     </div>
     <div class="d-flex justify-content-center">
@@ -21,8 +31,9 @@
             <ul class="pagination">
                 {% if shows.has_previous %}
                 <li>
-                    <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
-                        aria-disabled="true">Previous</a>
+                    <a class="page-link"
+                        href="?page={{shows.previous_page_number}}{% if type %}&type={{ type }}{% endif %}"
+                        tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
                 {% endif %}
                 <li class="page-link">
@@ -30,11 +41,14 @@
                 </li>
                 {% if shows.has_next %}
                 <li>
-                    <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
+                    <a class="page-link"
+                        href="?page={{shows.next_page_number}}{% if type %}&type={{ type }}{% endif %}">Next</a>
                 </li>
                 {% endif %}
             </ul>
         </nav>
+
+
     </div>
     <div class="row p-3">
         {% for showd in shows %}
@@ -63,8 +77,9 @@
             <ul class="pagination">
                 {% if shows.has_previous %}
                 <li>
-                    <a class="page-link" href="?page={{shows.previous_page_number}}" tabindex="-1"
-                        aria-disabled="true">Previous</a>
+                     <a class="page-link"
+                        href="?page={{shows.previous_page_number}}{% if type %}&type={{ type }}{% endif %}"
+                        tabindex="-1" aria-disabled="true">Previous</a>
                 </li>
                 {% endif %}
                 <li class="page-link">
@@ -72,11 +87,14 @@
                 </li>
                 {% if shows.has_next %}
                 <li>
-                    <a class="page-link" href="?page={{shows.next_page_number}}">Next</a>
+                    <a class="page-link"
+                        href="?page={{shows.next_page_number}}{% if type %}&type={{ type }}{% endif %}">Next</a>
                 </li>
                 {% endif %}
             </ul>
         </nav>
+
+        
     </div>
 </div>
 
