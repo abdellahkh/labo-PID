@@ -39,8 +39,6 @@ urlpatterns = [
     path('panier/', ProductLandingPageView.as_view(), name= 'landing-page'),
     path('cancel/', CancelView.as_view(), name='cancel'),
     path('success/', SuccessView.as_view(), name='success'),
-    
-    
 
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),
