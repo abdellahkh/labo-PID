@@ -151,16 +151,10 @@
                 {% for representation in representation_user %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                   <strong>{{ representation.representation_id.show_id.slug }}</strong>
-                  <span class="badge badge-primary badge-pill custom-span">{{ representation.representation_id.when }}</span>
+                  <span class="badge badge-primary badge-pill">{{ representation.representation_id.when }}</span>
                 </li>
                 {% endfor %}
               </ul>
-              <style>
-                .custom-span {
-                    text-align: right;
-                    width: 150px; /* Ajustez la largeur selon vos besoins */
-                }
-            </style>
               {% else %}
               <div class="sidebar-left">
                 <div class="container">
