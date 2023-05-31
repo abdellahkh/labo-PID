@@ -132,31 +132,44 @@
       <div class="col-md-2 sidebar-left ml-5 mx-auto">
         <div class="container">
           <div class="p-3">
-            <h4 class="text-center alert alert-info">Donnees</h4>
           </div>
           <div class="sidebar-right">
             {% if user.is_authenticated %}
-            <h3>Bienvenue {{ user.first_name }}</h3>
-            <!-- Autres éléments de la sidebar de droite -->
-            <p>Username: {{ user.username }}</p>
-            <h6><strong>Votre historique</strong></h6>
-            <ul class="list-group">
-              {% for representation in representation_user %}
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <strong>{{ representation.representation_id.show_id.slug }}</strong>
-                <span class="badge badge-primary badge-pill">{{ representation.representation_id.when }}</span>
-              </li>
-              {% endfor %}
-            </ul>
-            {% else %}
-            <div class="sidebar-left">
-              <div class="container">
-                <p>Vous etes hors-ligne</p>
-                <a href="{% url 'login' %}">
-                  <p>Connection</p>
-                </a>
+              <h3 class="bienvenu" >Bienvenue {{ user.first_name }}</h3>
+              <style>              
+                .bienvenu {
+                    color: rgb(204, 153, 255);
+                    font-style: italic;}
+                .Username {
+                  color: rgb(153, 153, 255);
+                  font-style: italic;}
+              </style>
+              <!-- Autres éléments de la sidebar de droite -->
+              <p class="Username">Username: {{ user.username }}</p>
+              <h6><strong>Votre historique de reservation</strong></h6>
+              <ul class="list-group">
+                {% for representation in representation_user %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <strong>{{ representation.representation_id.show_id.slug }}</strong>
+                  <span class="badge badge-primary badge-pill custom-span">{{ representation.representation_id.when }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+              <style>
+                .custom-span {
+                    text-align: right;
+                    width: 150px; /* Ajustez la largeur selon vos besoins */
+                }
+            </style>
+              {% else %}
+              <div class="sidebar-left">
+                <div class="container">
+                  <p>Vous etes hors-ligne</p>
+                  <a href="{% url 'login' %}">
+                    <p>Connection</p>
+                  </a>
+                </div>
               </div>
-            </div>
             {% endif %}
           </div>
         </div>
@@ -166,7 +179,7 @@
 
   <footer class="bg-dark p-3">
     <p class="text-center text-white">Projet Integration developpement</p>
-    <p class="text-center text-white">Realisé par : Kh'leeh Abdellah; Boutiebi Monir, Sennan Nordin, Gaëtan Coton, Younes Benyahya, Zakariya Jadi Moussa, bopete w'engulu isungandi</p>
+    <p class="text-center text-white">Realisé par : Kh'leeh Abdellah; Boutiebi Monir, Sennan Nordin, Gaëtan Coton, Kechibil Mohamed, Younes Benyahya, Zakariya Jadi Moussa</p>
   </footer>
 
   <!-- Optional JavaScript -->

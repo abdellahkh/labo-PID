@@ -4,13 +4,52 @@
 <div class="container m-5">
   <h1>{{ title }}</h1>
   <h4>Username:  {{ user }}</h4>
-
+  
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <input class="btn btn-success m-1" type="submit" value="Enregistrer">
     <a class="btn btn-info m-1" href="{% url 'home' %}">Retour</a>
   </form>
+</br></br></br>
+  {% if representation_user %}
+  <h4>Votre historique de réservations :</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Titre du spectacle</th>
+        <th>Date et heure</th>
+        <th>Nombre de places</th>
+        <th>Prix </th>
+        <th>totale</th>
+        {% if user.is_superuser %}
+        <th>Actions</th>        
+        {% endif %}
+        
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for representation in representation_user %}
+        <tr>
+          <td>{{ representation.representation_id.show_id.title }}</td>
+          <td>{{ representation.representation_id.when }}</td>
+          <td>{{ representation.places }}</td>
+          <td>{{ representation.representation_id.show_id.price }}</td>
+          <td>{{ representation.get_total_price }}</td>
+          {% if user.is_superuser %}
+          <td>
+            <a class="btn btn-danger" href="{% url 'update_reservation' pk=representation.pk %}">Modifier</a>  <!-- Mettez à jour cette ligne -->          </td>
+          {% endif %}
+          
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>Aucune réservation trouvée.</p>
+{% endif %}
+
 </div>
 {% endblock %}
 

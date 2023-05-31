@@ -11,8 +11,9 @@ urlpatterns = [
     path('addshow',addshow, name="addshow"),
     path('all_shows', allShows , name="allShows"),
     path('show/<int:show_id>', displayShow , name="show_detail" ),
-    path('show/<int:show_id>/edit', editShow, name="editShow"),
-    
+    path('updateShow/<int:show_id>', updateShow, name='updateShow'),
+    path('deleteShow/<int:show_id>', deleteShow, name="deleteShow"), 
+
     path('artist', allArtists , name="allArtists"),   # Visuel a faire
     path('artist/<int:artist_id>',showArtist, name='showArtist'),  # a rendre plus jolie
     path('artist/create/', artistCreate, name='artistCreate'),  # a rendre plus jolie
@@ -33,13 +34,14 @@ urlpatterns = [
     path('representation/create', createRepresentation, name='createRepresentation'),
     path('representation/<int:show_id>/reserver', representationReserver , name='representationReserver'),
     path('representation/<int:representation_id>/user_reservation', representationUserReservation , name='representationUserReservation'),
+    path('reservation/<int:pk>/update/', ReservationUpdateView.as_view(), name='update_reservation'),
 
     path('payment/', payment, name='payment'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session' ),
     path('panier/', ProductLandingPageView.as_view(), name= 'landing-page'),
     path('cancel/', CancelView.as_view(), name='cancel'),
     path('success/', SuccessView.as_view(), name='success'),
-
+    
     #path('role/', views.role.index, name='role_index'),
     #path('role/<int:role_id>', views.role.show, name='role_show'),
     #path('location/', views.location.index, name='location_index'),
