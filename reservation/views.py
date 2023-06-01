@@ -5,9 +5,8 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-import stripe
-
 from os.path import join
+import stripe
 from django.http import JsonResponse
 from django.conf import settings
 from django.views import View
@@ -15,7 +14,9 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.db.models import Q
 
+
 from django.views.generic.edit import UpdateView
+
 from reservation.models import Artist, Locality, Location, Representation, RepresentationUser, Show, Type
 from .forms import ArtistDeleteForm, RepresentationForm, ShowRegistration, ArtistFormCreation, UpdateUserForm, UserRepresentationForm
 from .models import *
@@ -30,6 +31,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 # Create your views here.
 # def home(request):
 #    shows = Show.objects.all()
@@ -70,16 +72,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime('%B'))
         'current_month': current_month
         })
 
-class ReservationUpdateView(UpdateView):
-    model = RepresentationUser
-    form_class = UserRepresentationForm
-    template_name = 'show/update_reservation.html'
-    success_url = '/myaccount/'  # L'URL de redirection après la modification
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Modifier la réservation'
-        return context
 
 def representationUserReservation(request, representation_id):
       
@@ -92,6 +85,7 @@ def representationUserReservation(request, representation_id):
                 representation_user = form.save(commit=False)
                 representation_user.representation_id = representation
                 representation_user.user_id = request.user
+
                 places = form.cleaned_data.get('places')
                 representation_user.places = places
 
@@ -100,10 +94,12 @@ def representationUserReservation(request, representation_id):
                 show = Show.objects.get(title=representation.show_id)
 
                 representation_user.save()
+
                 # Ajoute le nombre de places à la session pour l'utiliser dans la vue de paiement
                 request.session['places'] = places
                 request.session['show_id'] = show.id
                 request.session['representation_id'] = representation_id
+
                 messages.success(request, "Réservation réussie.")
                 return redirect('landing-page') 
             else:
@@ -123,6 +119,7 @@ def payment(request):
 
     # Passe le nombre de places au template
     return render(request, 'main/payment.html', {'places': places})
+
 
 
 def addshow(request):
@@ -153,7 +150,7 @@ def allShows(request):
 
     type_id = request.GET.get('type')  # récupérer le type à partir de la requête GET
     types = Type.objects.all()  # obtenir tous les types disponibles
-    representation_user = RepresentationUser.objects.filter(user_id=request.user)
+    #representation_user = RepresentationUser.objects.filter(user_id=request.user)
 
     if type_id:
         # Si un type a été choisi, trouver tous les artistes associés à ce type
@@ -179,44 +176,8 @@ def allShows(request):
         'types': types,
         'shows': show,
         'type': type_id,
-        'representation_user': representation_user,  # Ajout de la variable representation_user
+        #'representation_user': representation_user,  # Ajout de la variable representation_user
         })
-
-def updateShow(request, show_id):
-    if request.user.is_superuser:
-        show = get_object_or_404(Show, id=show_id)
-
-        if request.method == 'POST':
-            form = ShowRegistration(request.POST, request.FILES, instance=show)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Le spectacle a été mis à jour.")
-                return redirect('home')
-            else:
-                messages.error(request, "Impossible de mettre à jour le spectacle.")
-                print(form.errors)
-        else:
-            form = ShowRegistration(instance=show)
-    else:
-        messages.error(request, "Vous n'avez pas les droits requis.")
-        return redirect('home')
-
-    locations = Location.objects.all()
-    return render(request, 'show/updateShow.html', {'form': form, 'locs': locations})
-
-def deleteShow(request, show_id):
-    if request.user.is_superuser:
-        show = get_object_or_404(Show, id=show_id)
-
-        if request.method == 'POST':
-            show.delete()
-            messages.success(request, "Le spectacle a été supprimé avec succès.")
-            return redirect('allShows')
-
-        return render(request, 'show/deleteShow.html', {'show': show})
-
-    messages.error(request, "Vous n'avez pas les droits requis.")
-    return redirect('home')
 
 def createRepresentation(request):
     if request.user.is_superuser:
@@ -286,12 +247,36 @@ def get_shows_by_type(request, type_name):
 
     return render(request, 'main/shows_by_type.html', {'shows': shows})
 
+def updateShow(request, show_id):
+    if request.user.is_superuser:
+        show = get_object_or_404(Show, id=show_id)
+
+        if request.method == 'POST':
+            form = ShowRegistration(request.POST, request.FILES, instance=show)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Le spectacle a été mis à jour.")
+                return redirect('home')
+            else:
+                messages.error(request, "Impossible de mettre à jour le spectacle.")
+                print(form.errors)
+        else:
+            form = ShowRegistration(instance=show)
+    else:
+        messages.error(request, "Vous n'avez pas les droits requis.")
+        return redirect('home')
+
+    locations = Location.objects.all()
+    return render(request, 'show/updateShow.html', {'form': form, 'locs': locations})
 
 def allArtists(request):
     artists = Artist.objects.all().order_by('firstname').values()
-    representation_user = RepresentationUser.objects.filter(user_id=request.user)
+    #representation_user = RepresentationUser.objects.filter(user_id=request.user)
 
-    return render(request, "artist/allArtists.html", {'artists': artists, 'representation_user': representation_user,})
+    return render(request, "artist/allArtists.html", {
+        'artists': artists,
+        #'representation_user': representation_user,
+        })
 
 
 def displayShow(request, show_id):
@@ -305,6 +290,21 @@ def displayShow(request, show_id):
 
     title = 'Fiche d\'un show'
     return render(request, "show/show.html", {'show': show, 'title': title, 'representationList' :representationList, 'representation_user': representation_user,})
+
+
+def deleteShow(request, show_id):
+    if request.user.is_superuser:
+        show = get_object_or_404(Show, id=show_id)
+
+        if request.method == 'POST':
+            show.delete()
+            messages.success(request, "Le spectacle a été supprimé avec succès.")
+            return redirect('allShows')
+
+        return render(request, 'show/deleteShow.html', {'show': show})
+
+    messages.error(request, "Vous n'avez pas les droits requis.")
+    return redirect('home')
 
 
 def showArtist(request, artist_id):
@@ -550,3 +550,14 @@ class SuccessView(TemplateView):
 
 class CancelView(TemplateView):
     template_name = "cancel.html"
+
+class ReservationUpdateView(UpdateView):
+    model = RepresentationUser
+    form_class = UserRepresentationForm
+    template_name = 'show/update_reservation.html'
+    success_url = '/myaccount/'  # L'URL de redirection après la modification
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Modifier la réservation'
+        return context
